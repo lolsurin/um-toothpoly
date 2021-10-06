@@ -32,7 +32,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "yarn-upgrade-all": "^0.5.4"
-  }
+  "devDependencies": {}
 }
