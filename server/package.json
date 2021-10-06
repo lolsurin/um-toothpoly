@@ -7,9 +7,10 @@
     "start": "nodemon app.js"
   },
   "dependencies": {
-    "socket.io": "^2.3.0"
+    "socket.io": "^4.2.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.13",
+    "yarn-upgrade-all": "^0.5.4"
   }
 }

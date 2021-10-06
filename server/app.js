@@ -1,10 +1,22 @@
-const io = require('socket.io')(5000);
+const { createServer } = require('http')
+const { Server } = require('socket.io')
+
+const httpServer = createServer()
+const io = new Server(httpServer, {
+  cors: {
+    origin: ["ws://localhost:3000"],
+    methods: ["GET", "POST"]
+  }
+})
 
 // the count state
 let count = 0;
 
-io.on('connect', function(socket) {
+console.log('started')
+
+io.on('connection', (socket) => {
   // emit to the newly connected client the existing count 
+  console.log('connected')
   socket.emit('counter updated', count);
 
   // we listen for this event from the clients
@@ -15,3 +27,5 @@ io.on('connect', function(socket) {
     io.emit('counter updated', count);
   });
 });
+
+httpServer.listen(5000)

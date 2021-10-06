@@ -1,7 +1,5 @@
-# simple-react-socket.io-example
-
 ## Intro
-A super simple example of how to implement socket.io with React (CRA) and Node.
+socket.io + React + and Node.
 
 ## Setup
 1. Clone the repo
