@@ -10,7 +10,6 @@
     "socket.io": "^4.2.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.13",
-    "yarn-upgrade-all": "^0.5.4"
+    "nodemon": "^2.0.13"
   }
 }

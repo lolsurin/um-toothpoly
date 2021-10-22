@@ -16,7 +16,7 @@ console.log('started')
 
 io.on('connection', (socket) => {
   // emit to the newly connected client the existing count 
-  console.log('connected')
+  console.log(`a user is connected <${socket.id}>`)
   socket.emit('counter updated', count);
 
   // we listen for this event from the clients
@@ -26,6 +26,11 @@ io.on('connection', (socket) => {
     // emit to EVERYONE the updated count
     io.emit('counter updated', count);
   });
+
+  socket.on('component event', () => {
+    console.log('got itt')
+  })
+
 });
 
 httpServer.listen(5000)
