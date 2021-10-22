@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import { io } from 'socket.io-client'; 
 import Playground from './components/playground'
 
 import { socket } from './services/socket.js'
@@ -30,7 +29,7 @@ function App() {
   }, []);
   return (
     <div>
-      <button onClick={handleClick}>Counter: {count}</button>
+      {/* <button onClick={handleClick}>Counter: {count}</button> */}
       <Playground socket={socket}/>
     </div>
   );

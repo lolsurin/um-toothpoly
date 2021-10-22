@@ -1,5 +1,6 @@
 const { createServer } = require('http')
 const { Server } = require('socket.io')
+const { makeid } = require('./utils')
 
 const httpServer = createServer()
 const io = new Server(httpServer, {
@@ -12,12 +13,63 @@ const io = new Server(httpServer, {
 // the count state
 let count = 0;
 
+const roomStates = {}
+const clientRooms = {}
+
 console.log('started')
 
 io.on('connection', (socket) => {
   // emit to the newly connected client the existing count 
   console.log(`a user is connected <${socket.id}>`)
   socket.emit('counter updated', count);
+
+
+
+  function handleNewGame() {
+    console.log('creating new game')
+    let roomName = makeid(5)
+    clientRooms[socket.id] = roomName;
+    roomStates[roomName] = 0
+    socket.emit('gameCode', roomName)
+
+    socket.join(roomName)
+    socket.number = 1
+    io.to(roomName).emit('init', 1)
+  }
+
+  function handleCounter() {
+    let roomName = clientRooms[socket.id]
+    let roomState = Number(roomStates[roomName])
+    roomStates[roomName] = roomState + 1
+    io.to(roomName).emit('updateCounter',roomStates[roomName])
+  }
+  
+  function handleJoinGame(state){
+
+    console.log(state.roomCode)
+    let roomName = state.roomCode
+
+    //const room = io.sockets.adapter.rooms[roomName] //get room instance
+    let numClients = 0
+    io.in(roomName).fetchSockets().then(room => {
+
+      numClients = room.length
+
+      if (numClients === 0) {
+        socket.emit('invalidCode')
+        console.log('invalid room code')
+        return
+      }
+  
+      clientRooms[socket.id] = roomName
+      socket.join(roomName)
+      console.log(`${socket.id} joined room ${roomName}`)
+      console.log(clientRooms)
+    })
+
+    
+  }
+
 
   // we listen for this event from the clients
   socket.on('counter clicked', () => {
@@ -27,9 +79,11 @@ io.on('connection', (socket) => {
     io.emit('counter updated', count);
   });
 
-  socket.on('component event', () => {
-    console.log('got itt')
-  })
+  
+
+  socket.on('counter', handleCounter)
+  socket.on('newGame', handleNewGame )
+  socket.on('joinGame', handleJoinGame)
 
 });
 
