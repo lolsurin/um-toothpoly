@@ -7,8 +7,11 @@ export default class Playground extends React.Component {
 
         this.state = {
             roomCode: '',
-            counter: 0
+            counter: 0,
+            playerName: '',
+            players: ''
         };
+        //functional components
         
         this.handleChange = this.handleChange.bind(this)
         this.handleJoinGame = this.handleJoinGame.bind(this)
@@ -19,6 +22,7 @@ export default class Playground extends React.Component {
         this.handleUpdateCounter = this.handleUpdateCounter.bind(this)
         this.handleInit = this.handleInit.bind(this) 
         this.handleGameCode = this.handleGameCode.bind(this)
+        this.handleUpdatePlayerList = this.handleUpdatePlayerList.bind(this)
 
     }
 
@@ -26,11 +30,16 @@ export default class Playground extends React.Component {
         socket.on('updateCounter', this.handleUpdateCounter)
         socket.on('init', this.handleInit)
         socket.on('gameCode', this.handleGameCode)
+        socket.on('updatePlayerList', this.handleUpdatePlayerList)
         
     }
 
     handleChange(event) {
-        this.setState({roomCode: event.target.value});
+        //the form now accepts two values (roomCode, playerName)
+        this.setState({
+            ...this.state,
+            [event.target.name]: event.target.value
+        });
     }
 
     handleInit(player) {
@@ -64,19 +73,29 @@ export default class Playground extends React.Component {
         this.setState({counter: tet})
     }
 
+    handleUpdatePlayerList(PL) {
+        console.log('received '+PL)
+        this.setState({players: PL})
+    }
     render() {
         return (
             <div>
                 <button onClick={this.handleNewGame}>New Game</button>
                 <label></label>
+                {/* Form has two inputs now; player ingame-name and room code*/ }
                 <form onSubmit={this.handleJoinGame}>
                     <label>
                     Room:
-                    <input type="text" value={this.state.roomCode} onChange={this.handleChange} />
+                    <input type="text" name="roomCode" value={this.state.roomCode} onChange={this.handleChange} />
+                    </label>
+                    <label>
+                    Name:
+                    <input type="text" name="playerName" value={this.state.playerName} onChange={this.handleChange} />
                     </label>
                     <input type="submit" value="go!" />
                 </form>
                 <button onClick={this.handleClick}>Counter: {this.state.counter}</button>
+                <p>Players: {this.state.players}</p>
             </div>
         );
     }

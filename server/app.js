@@ -15,6 +15,7 @@ let count = 0;
 
 const roomStates = {}
 const clientRooms = {}
+const playerList = {}
 
 console.log('started')
 
@@ -30,6 +31,7 @@ io.on('connection', (socket) => {
     let roomName = makeid(5)
     clientRooms[socket.id] = roomName;
     roomStates[roomName] = 0
+    playerList[roomName] = ''
     socket.emit('gameCode', roomName)
 
     socket.join(roomName)
@@ -48,6 +50,7 @@ io.on('connection', (socket) => {
 
     console.log(state.roomCode)
     let roomName = state.roomCode
+    let playerIGN = state.playerName
 
     //const room = io.sockets.adapter.rooms[roomName] //get room instance
     let numClients = 0
@@ -62,9 +65,15 @@ io.on('connection', (socket) => {
       }
   
       clientRooms[socket.id] = roomName
+      //playerList[roomName] = playerList[roomName]+playerIGN+' '
       socket.join(roomName)
       console.log(`${socket.id} joined room ${roomName}`)
+      console.log(`${playerIGN} joined room ${roomName}`)
+      let roomPlayers = String(playerList[roomName])
+      playerList[roomName] = roomPlayers + playerIGN +' '
+      console.log(`Player list : ${playerList[roomName]}`)
       console.log(clientRooms)
+      io.to(roomName).emit('updatePlayerList',playerList[roomName])
     })
 
     
