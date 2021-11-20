@@ -9,7 +9,7 @@ const playerList = {}
 
 console.log('started')
 
-module.exports = (io) => {
+const gameSocket = (io) => {
     io.on('connection', (socket) => {
         // emit to the newly connected client the existing count 
         console.log(`a user is connected <${socket.id}>`)
@@ -87,3 +87,6 @@ module.exports = (io) => {
         
     });
 }
+
+
+module.exports = gameSocket

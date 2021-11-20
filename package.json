@@ -1,0 +1,19 @@
+{
+  "name": "um-toothpoly",
+  "version": "1.0.0",
+  "description": "socket.io + React + and Node.",
+  "main": "server/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aqlanhadi/um-toothpoly.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aqlanhadi/um-toothpoly/issues"
+  },
+  "homepage": "https://github.com/aqlanhadi/um-toothpoly#readme"
+}
