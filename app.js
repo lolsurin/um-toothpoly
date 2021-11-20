@@ -4,7 +4,7 @@ const { makeid } = require('./utils')
 
 const app = express()
 
-app.use(express.static('public'))
+app.use(express.static('build'))
 
 
 const httpServer = require('http').createServer(app)
@@ -24,7 +24,6 @@ const clientRooms = {}
 const playerList = {}
 
 console.log('started')
-console.log()
 
 io.on('connection', (socket) => {
   // emit to the newly connected client the existing count 
