@@ -1,7 +1,13 @@
-const { createServer } = require('http')
+const express = require('express')
 const { Server } = require('socket.io')
+const gameSocket = require('./socket')
 
-const httpServer = createServer()
+const app = express()
+
+app.use(express.static('build'))
+
+const httpServer = require('http').createServer(app)
+
 const io = new Server(httpServer, {
   cors: {
     origin: ["ws://localhost:3000"],
@@ -9,28 +15,7 @@ const io = new Server(httpServer, {
   }
 })
 
-// the count state
-let count = 0;
+gameSocket(io)
 
-console.log('started')
-
-io.on('connection', (socket) => {
-  // emit to the newly connected client the existing count 
-  console.log(`a user is connected <${socket.id}>`)
-  socket.emit('counter updated', count);
-
-  // we listen for this event from the clients
-  socket.on('counter clicked', () => {
-    // increment the count
-    count++;
-    // emit to EVERYONE the updated count
-    io.emit('counter updated', count);
-  });
-
-  socket.on('component event', () => {
-    console.log('got itt')
-  })
-
-});
 
 httpServer.listen(5000)
