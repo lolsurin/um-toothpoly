@@ -23,5 +23,5 @@ const PORT = process.env.PORT || 5000
 //app.use((req, res) => res.sendFile(INDEX, { root: __dirname }))
 
 httpServer.listen(PORT, () => {
-  console.log(`server listening on port ${port}`)
+  console.log(`server listening on port ${PORT}`)
 })
