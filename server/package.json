@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "dev":"nodemon app.js",
-    "heroku-postbuild": "npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "npm install --prefix ./../client && npm run build --prefix ./../client"
   },
   "engines": {
     "node": "15.x",
