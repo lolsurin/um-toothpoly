@@ -3,7 +3,10 @@ const { Server } = require('socket.io')
 const { makeid } = require('./utils')
 
 const app = express()
+
 app.use(express.static('public'))
+
+
 const httpServer = require('http').createServer(app)
 
 const io = new Server(httpServer, {
