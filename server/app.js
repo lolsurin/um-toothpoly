@@ -18,4 +18,4 @@ const io = new Server(httpServer, {
 gameSocket(io)
 
 
-httpServer.listen(5000)
+httpServer.listen(process.env.PORT || 5000)
