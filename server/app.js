@@ -1,8 +1,11 @@
-const { createServer } = require('http')
+const express = require('express')
 const { Server } = require('socket.io')
 const { makeid } = require('./utils')
 
-const httpServer = createServer()
+const app = express()
+app.use(express.static('public'))
+const httpServer = require('http').createServer(app)
+
 const io = new Server(httpServer, {
   cors: {
     origin: ["ws://localhost:3000"],
@@ -18,6 +21,7 @@ const clientRooms = {}
 const playerList = {}
 
 console.log('started')
+console.log()
 
 io.on('connection', (socket) => {
   // emit to the newly connected client the existing count 
