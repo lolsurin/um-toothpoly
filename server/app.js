@@ -17,5 +17,8 @@ const io = new Server(httpServer, {
 
 gameSocket(io)
 
+const port = process.env.PORT || 5000
 
-httpServer.listen(process.env.PORT || 5000)
+httpServer.listen(port, () => {
+  console.log(`server listening on port ${port}`)
+})
