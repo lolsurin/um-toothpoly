@@ -8,8 +8,8 @@ function App() {
 
   return (
     <div>
-      <Playground socket={socket}/>
-      {/* <Lobby socket={socket}/> */}
+      {/* <Playground socket={socket}/> */}
+      <Lobby socket={socket}/>
     </div>
   );
 }
