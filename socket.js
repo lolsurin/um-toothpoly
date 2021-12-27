@@ -1,48 +1,23 @@
-const { makeid } = require('./utils')
-
-// the count state
-let count = 0;
-
-const roomStates = {}
-const clientRooms = {}
-const playerList = {}
-
-const rooms = []
+const { removeFromAll } = require('./utils');
 
 console.log('socket started')
 
 const gameSocket = (socket) => {
     socket.on('connection', (client) => {
         // emit to the newly connected client the existing count 
-        console.log(`a user is connected <${client.id}>`)
-        client.emit('counter updated', count);
+        console.log(`connected    : <${client.id}>`)
 
         require('./events/newGame')(client)
         require('./events/joinGame')(socket, client)
         require('./events/leaveGame')(socket, client)
         require('./events/startGame')(socket, client)
 
-        function handleCounter() {
-            let roomName = clientRooms[client.id]
-            let roomState = Number(roomStates[roomName])
-            roomStates[roomName] = roomState + 1
-            socket.to(roomName).emit('updateCounter',roomStates[roomName])
-        }
-        
-        
-        
-        // we listen for this event from the clients
-        client.on('counter clicked', () => {
-            // increment the count
-            count++;
-            // emit to EVERYONE the updated count
-            socket.emit('counter updated', count);
-        });
-        
-        
-        
-        client.on('counter', handleCounter)
-        
+        require('./events/testEvents')(socket, client)
+
+        client.on('disconnect', () => {
+            console.log(`disconnected : <${client.id}>`)
+            removeFromAll(client.id)
+        })        
     });
 }
 
