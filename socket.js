@@ -20,6 +20,7 @@ const gameSocket = (socket) => {
         require('./events/newGame')(client)
         require('./events/joinGame')(socket, client)
         require('./events/leaveGame')(socket, client)
+        require('./events/startGame')(socket, client)
 
         function handleCounter() {
             let roomName = clientRooms[client.id]
