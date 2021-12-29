@@ -1,15 +1,18 @@
 const states = require("../states")
 
 module.exports = function(socket, client) {
-    client.on('leave_game', data => {
-        console.log('[:server] leaving room ...' + data.roomCode)
-
+    client.on('game:leave', () => {
+        console.log(`deleting sumn..`)
         client.leave(states.clients[client.id])
 
         delete states.clients[client.id]
 
-        let room_idx = states.rooms.findIndex(room => room.roomName == data.roomCode) // find room index
-        let room = states.rooms[room_idx]       
+        let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
+
+        if (!room_idx > -1) return
+
+        let room = states.rooms[room_idx]
+
         let player_idx = room.players.findIndex(player => player.id == client.id)
         
         room.playerCount-- // decrement player count for room
