@@ -13,6 +13,7 @@ module.exports = function(client) {
         let room = {
             roomName: roomName,
             playerCount: 1,
+            state: 'lobby',
             players: [ {id: client.id, name: playerName} ],
         }
 
