@@ -10,7 +10,7 @@ const gameSocket = (socket) => {
         require('./events/newGame')(client)
         require('./events/joinGame')(socket, client)
         require('./events/leaveGame')(socket, client)
-        require('./events/startGame')(socket, client)
+        //require('./events/startGame')(socket, client)
 
         require('./events/game')(socket, client)
 
@@ -20,6 +20,10 @@ const gameSocket = (socket) => {
             console.log(`disconnected : <${client.id}>`)
             removeFromAll(client.id)
         })        
+    });
+
+    socket.on('error', function (err) {
+        console.log(err);
     });
 }
 
