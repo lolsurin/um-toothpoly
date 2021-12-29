@@ -12,6 +12,8 @@ const gameSocket = (socket) => {
         require('./events/leaveGame')(socket, client)
         require('./events/startGame')(socket, client)
 
+        require('./events/game')(socket, client)
+
         require('./events/testEvents')(socket, client)
 
         client.on('disconnect', () => {
