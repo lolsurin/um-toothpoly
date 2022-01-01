@@ -1,5 +1,7 @@
 const states = require("../states")
 
+
+
 module.exports = function(socket, client) {
 
     client.on('game:start', (data) => {
@@ -23,6 +25,9 @@ module.exports = function(socket, client) {
     
     client.on('game:move', data => {
         let currRoom = states.rooms.find(room => room.players.find(player => player.id == client.id))
+
+        if (!currRoom) return // handle disconnection
+
         let playIdx = currRoom.players.findIndex(player => player.id == client.id)
 
         console.log(`[:server] player is from ${currRoom.roomName}, at idx ${playIdx} `)
@@ -34,7 +39,13 @@ module.exports = function(socket, client) {
         let player_idx = room.players.findIndex(player => player.id == client.id)
 
         room.players[player_idx].score += steps
+        room.players[player_idx].position += steps
+        room.turn = (room.turn + 1) % room.players.length
         // console.log(states.rooms) 
+
+        // if playes in same position, send flag to client (to shift position)
+
+        //
         
         socket.to(states.clients[client.id]).emit('game:move', { room })
         //socket.emit('game:move', { room: 'this is not it' })
