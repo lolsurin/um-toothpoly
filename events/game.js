@@ -30,16 +30,19 @@ module.exports = function(socket, client) {
 
         let playIdx = currRoom.players.findIndex(player => player.id == client.id)
 
-        console.log(`[:server] player is from ${currRoom.roomName}, at idx ${playIdx} `)
-        let steps = Math.floor(Math.random() * 6) + 1
+        //console.log(`[:server] player is from ${currRoom.roomName}, at idx ${playIdx} `)
+        let steps = Math.floor(Math.random() * 6) + 1 // dice
         ///////////////////////////////////////////////////////
         let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
         let room = states.rooms[room_idx]
 
-        let player_idx = room.players.findIndex(player => player.id == client.id)
+        let player_idx = room.players.findIndex(player => player.id == client.id)      
 
         room.players[player_idx].score += steps
         room.players[player_idx].position += steps
+
+
+
         room.turn = (room.turn + 1) % room.players.length
         // console.log(states.rooms) 
 
@@ -49,6 +52,15 @@ module.exports = function(socket, client) {
         
         socket.to(states.clients[client.id]).emit('game:move', { room })
         //socket.emit('game:move', { room: 'this is not it' })
-        console.log(`broadcasting to ${room.roomName} ${JSON.stringify(room.players[player_idx])}`)
+        //console.log(`broadcasting to ${room.roomName} ${JSON.stringify(room.players[player_idx])}`)
+    })
+
+    client.on('game:snake', data => {
+        console.log(data.rule)
+    })
+
+    client.on('game:ladder', data => {
+        console.log(data.rule)
+        socket.to(states.clients[client.id]).emit('game:question', { for: client.id })
     })
 }
