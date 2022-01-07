@@ -40,7 +40,14 @@ module.exports = function(socket, client) {
         let player_idx = room.players.findIndex(player => player.id == client.id)      
 
         room.players[player_idx].score += steps
-        room.players[player_idx].position += steps
+
+        if (data) {
+            room.players[player_idx].position = data.to
+        } else {
+            room.players[player_idx].position += steps
+        }
+
+        
 
         room.turn = (room.turn + 1) % room.players.length
         
