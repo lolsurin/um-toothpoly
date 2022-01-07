@@ -24,14 +24,15 @@ module.exports = function(socket, client) {
     })
     
     client.on('game:move', data => {
+
         let currRoom = states.rooms.find(room => room.players.find(player => player.id == client.id))
 
         if (!currRoom) return // handle disconnection
 
         let playIdx = currRoom.players.findIndex(player => player.id == client.id)
 
-        //console.log(`[:server] player is from ${currRoom.roomName}, at idx ${playIdx} `)
         let steps = Math.floor(Math.random() * 6) + 1 // dice
+
         ///////////////////////////////////////////////////////
         let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
         let room = states.rooms[room_idx]
@@ -41,26 +42,55 @@ module.exports = function(socket, client) {
         room.players[player_idx].score += steps
         room.players[player_idx].position += steps
 
-
-
         room.turn = (room.turn + 1) % room.players.length
-        // console.log(states.rooms) 
-
-        // if playes in same position, send flag to client (to shift position)
-
-        //
         
         socket.to(states.clients[client.id]).emit('game:move', { room })
-        //socket.emit('game:move', { room: 'this is not it' })
-        //console.log(`broadcasting to ${room.roomName} ${JSON.stringify(room.players[player_idx])}`)
     })
 
     client.on('game:snake', data => {
         console.log(data.rule)
+        let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
+        let room = states.rooms[room_idx]
+
+        room.state = 'question'
+        room.inPlay = data.rule
+
+        socket.to(states.clients[client.id]).emit('game:question', { room })
     })
 
     client.on('game:ladder', data => {
         console.log(data.rule)
-        socket.to(states.clients[client.id]).emit('game:question', { for: client.id })
+        let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
+        let room = states.rooms[room_idx]
+
+        room.state = 'question'
+        room.inPlay = data.rule
+
+        socket.to(states.clients[client.id]).emit('game:question', { room })
+    })
+
+    client.on('game:correct', data => {
+
+
+        let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
+        let room = states.rooms[room_idx]
+        let player_idx = room.players.findIndex(player => player.id == client.id)
+
+        if (data.rule.event === 'ladder') room.players[player_idx].position = data.rule.to
+
+        room.state = 'game'
+        socket.to(states.clients[client.id]).emit('game:move', { room })
+    })
+
+    client.on('game:incorrect', data => {
+
+        let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
+        let room = states.rooms[room_idx]
+        let player_idx = room.players.findIndex(player => player.id == client.id)
+
+        if (data.rule.event === 'snake') room.players[player_idx].position = data.rule.to
+
+        room.state = 'game'
+        socket.to(states.clients[client.id]).emit('game:move', { room })
     })
 }
