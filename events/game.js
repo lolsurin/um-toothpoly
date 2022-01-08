@@ -43,10 +43,13 @@ module.exports = function(socket, client) {
 
         if (data) {
             room.players[player_idx].position = data.to
+            //room.players[player_idx].goDirectly = true
         } else {
             room.players[player_idx].position += steps
+            //room.players[player_idx].goDirectly = false
         }
-
+        
+        room.players[player_idx].goDirectly = false
         
 
         room.turn = (room.turn + 1) % room.players.length
@@ -85,9 +88,11 @@ module.exports = function(socket, client) {
 
         if (data.rule.event === 'ladder') {
             room.players[player_idx].position = data.rule.to
+            room.players[player_idx].goDirectly = true
         }
 
         room.state = 'game'
+
         socket.to(states.clients[client.id]).emit('game:move', { room })
     })
 
@@ -99,9 +104,11 @@ module.exports = function(socket, client) {
 
         if (data.rule.event === 'snake') {
             room.players[player_idx].position = data.rule.to
+            room.players[player_idx].goDirectly = true
         }
 
         room.state = 'game'
+
         socket.to(states.clients[client.id]).emit('game:move', { room })
     })
 }
