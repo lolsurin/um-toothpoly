@@ -83,7 +83,9 @@ module.exports = function(socket, client) {
         let room = states.rooms[room_idx]
         let player_idx = room.players.findIndex(player => player.id == client.id)
 
-        if (data.rule.event === 'ladder') room.players[player_idx].position = data.rule.to
+        if (data.rule.event === 'ladder') {
+            room.players[player_idx].position = data.rule.to
+        }
 
         room.state = 'game'
         socket.to(states.clients[client.id]).emit('game:move', { room })
@@ -95,7 +97,9 @@ module.exports = function(socket, client) {
         let room = states.rooms[room_idx]
         let player_idx = room.players.findIndex(player => player.id == client.id)
 
-        if (data.rule.event === 'snake') room.players[player_idx].position = data.rule.to
+        if (data.rule.event === 'snake') {
+            room.players[player_idx].position = data.rule.to
+        }
 
         room.state = 'game'
         socket.to(states.clients[client.id]).emit('game:move', { room })
