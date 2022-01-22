@@ -16,7 +16,7 @@ module.exports = function(socket, client) {
             ...p, 
             rank: 1, 
             score: 0,
-            position: 1,
+            position: 0,
             is_winner: false,
         }))
 
@@ -26,10 +26,7 @@ module.exports = function(socket, client) {
     client.on('game:move', data => {
 
         let currRoom = states.rooms.find(room => room.players.find(player => player.id == client.id))
-
         if (!currRoom) return // handle disconnection
-
-        let playIdx = currRoom.players.findIndex(player => player.id == client.id)
 
         let steps = Math.floor(Math.random() * 6) + 1 // dice
 
@@ -43,14 +40,11 @@ module.exports = function(socket, client) {
 
         if (data) {
             room.players[player_idx].position = data.to
-            //room.players[player_idx].goDirectly = true
         } else {
             room.players[player_idx].position += steps
-            //room.players[player_idx].goDirectly = false
         }
         
-        room.players[player_idx].goDirectly = false
-        
+        room.players[player_idx].goDirectly = false        
 
         room.turn = (room.turn + 1) % room.players.length
         
