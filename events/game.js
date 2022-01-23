@@ -46,8 +46,16 @@ module.exports = function(socket, client) {
         
         room.players[player_idx].goDirectly = false        
 
-        room.turn = (room.turn + 1) % room.players.length
+        //room.turn = (room.turn + 1) % room.players.length
         
+        socket.to(states.clients[client.id]).emit('game:move', { room })
+    })
+
+    client.on(`game:change_turn`, () => {
+        let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
+        let room = states.rooms[room_idx]
+
+        room.turn = (room.turn + 1) % room.players.length
         socket.to(states.clients[client.id]).emit('game:move', { room })
     })
 
@@ -86,6 +94,7 @@ module.exports = function(socket, client) {
         }
 
         room.state = 'game'
+        room.turn = (room.turn + 1) % room.players.length
 
         socket.to(states.clients[client.id]).emit('game:move', { room })
     })
@@ -102,6 +111,7 @@ module.exports = function(socket, client) {
         }
 
         room.state = 'game'
+        room.turn = (room.turn + 1) % room.players.length
 
         socket.to(states.clients[client.id]).emit('game:move', { room })
     })
