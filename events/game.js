@@ -59,7 +59,9 @@ module.exports = function(socket, client) {
         room.state = 'question'
         room.inPlay = data.rule
 
-        socket.to(states.clients[client.id]).emit('game:question', { room })
+        socket.to(states.clients[client.id]).emit('game:stage_question', { room })
+        console.log(`emitted question event to client`)
+        //socket.to(states.clients[client.id]).emit('game:question', { room })
     })
 
     client.on('game:ladder', data => {
@@ -70,7 +72,9 @@ module.exports = function(socket, client) {
         room.state = 'question'
         room.inPlay = data.rule
 
-        socket.to(states.clients[client.id]).emit('game:question', { room })
+        socket.to(states.clients[client.id]).emit('game:stage_question', { room })
+        console.log(`emitted question event to client`)
+        //socket.to(states.clients[client.id]).emit('game:question', { room })
     })
 
     client.on('game:correct', data => {
