@@ -6,6 +6,7 @@ module.exports.clients = {}
 //     roomName: 'MZ1SH',
 //     playerCount: 1,
 //     state: 'lobby|game|question|end',
+//     answered_questions: [],
 //     players: [
 //       {
 //         id: 'ru_mqRfjz819jjEGAAAH',

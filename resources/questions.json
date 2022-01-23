@@ -1,38 +1,38 @@
 [
     {
+        "image_path": null,
         "en": {
             "question": "Toothpaste should be placed in large quantities on the entire surface of the toothbrush to ensure its effectiveness.",
             "answers": [
-                "True",
-                "False"
+                { "value": "True", "correct": true },
+                { "value": "False", "correct": false }
             ]        
         },
         "my": {
             "question": "Ubat gigi perlu diletakkan dengan banyak di keseluruhan permukaan berus gigi untuk memastikan keberkesanannya.",
             "answers": [
-                "Betul",
-                "Salah"
+                { "value": "Betul", "correct": true },
+                { "value": "Salah", "correct": false }
             ]
             
-        },
-        "correct": 1
+        }
     },
     {
+        "image_path": null,
         "en": {
             "question": "Fluoridated toothpaste does not help to strengthen teeth.",
             "answers": [
-                "True",
-                "False"
+                { "value": "True", "correct": true },
+                { "value": "False", "correct": false }
             ]        
         },
         "my": {
             "question": "Ubat gigi berfluorida tidak membantu untuk menguatkan gigi.",
             "answers": [
-                "Betul",
-                "Salah"
+                { "value": "Betul", "correct": true },
+                { "value": "Salah", "correct": false }
             ]
             
-        },
-        "correct": 1
+        }
     }
 ]
