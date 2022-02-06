@@ -16,7 +16,7 @@ module.exports = function(socket, client) {
             ...p, 
             rank: 1, 
             score: 0,
-            position: 0,
+            position: 95,
             is_winner: false,
         }))
 
@@ -43,12 +43,25 @@ module.exports = function(socket, client) {
         } else {
             room.players[player_idx].position += steps
         }
-        
-        room.players[player_idx].goDirectly = false        
 
-        //room.turn = (room.turn + 1) % room.players.length
+        room.players[player_idx].goDirectly = false
+        
         
         socket.to(states.clients[client.id]).emit('game:move', { room })
+    })
+
+    client.on(`game:update_player_position`, (data) => {
+        console.log(`updating player position to ${data.position}`)
+        let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
+        let room = states.rooms[room_idx]
+
+        let player_idx = room.players.findIndex(player => player.id == client.id)
+
+        room.players[player_idx].position = data.position
+        room.players[player_idx].goDirectly = true
+        // room.turn = (room.turn + 1) % room.players.length
+        socket.to(states.clients[client.id]).emit('game:move', { room })
+
     })
 
     client.on(`game:change_turn`, () => {
