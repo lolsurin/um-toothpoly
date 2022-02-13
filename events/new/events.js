@@ -1,5 +1,5 @@
 const { makeid } = require("../../utils")
-const states = require("../../states")
+const rooms = require("../../states")
 const questions = require("../../resources/questions")
 
 module.exports = (socket, client) => {
@@ -13,7 +13,7 @@ module.exports = (socket, client) => {
             players: [],
         }
 
-        states.rooms.push(room)
+        rooms.push(room)
 
         callback({code})
 
@@ -21,7 +21,7 @@ module.exports = (socket, client) => {
 
     client.on('game:join', (data, cb) => {
 
-        let room = states.rooms.find(r => r.code === data.code)
+        let room = rooms.find(r => r.code === data.code)
 
         if (room) {
             
@@ -47,7 +47,7 @@ module.exports = (socket, client) => {
     })
 
     client.on('game:data:fetch', (data, cb) => {
-        let room = states.rooms.find(r => r.code === data.code)      
+        let room = rooms.find(r => r.code === data.code)      
 
         if (room) {
             cb({

@@ -36,17 +36,10 @@ function removeFromAll(id) {
 	})	
 }
 
-function cleanupUponDisconnect(id, socket) {
-	console.log(`cleaning up upon disconnect: ${id}`)
-	
-	let states = require("./states")
-	let rooms = states.rooms
+function cleanupUponDisconnect(id, socket) {	
+	let rooms = require("./states")
 
 	let roomIdx = rooms.findIndex(room => room.players.findIndex(player => player._id == id) > -1)
-
-	console.log(`player is from room: ${rooms[roomIdx]}`)
-
-	
 
 	if (roomIdx > -1) {
 		let room = rooms[roomIdx]
@@ -60,7 +53,4 @@ function cleanupUponDisconnect(id, socket) {
 			socket.in(room.code).emit('game:data:update', room)
 		}
 	}
-	
-	console.log(`cleanup complete, current states`)
-	console.log(states)
 }
