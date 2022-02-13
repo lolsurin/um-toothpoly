@@ -10,10 +10,7 @@ module.exports = (socket, client) => {
         let room = {
             code,
             scene: 'lobby',
-            players: [{
-                _id: client.id,
-                state: 'joining'
-            }],
+            players: [],
         }
 
         states.rooms.push(room)
@@ -23,17 +20,39 @@ module.exports = (socket, client) => {
     })
 
     client.on('game:join', (data, cb) => {
+
         let room = states.rooms.find(r => r.code === data.code)
 
         if (room) {
+            
+            client.join(room.code)
             room.players.push({
                 _id: client.id,
-                state: 'joined'
+                name: data.name,
             })
 
             cb({
                 ok: true,
                 scene: 'lobby',
+            })
+
+            socket.in(room.code).emit('game:data:update', room)
+
+        } else {
+            cb({
+                ok: false
+            })
+        }
+        
+    })
+
+    client.on('game:data:fetch', (data, cb) => {
+        let room = states.rooms.find(r => r.code === data.code)      
+
+        if (room) {
+            cb({
+                ok: true,
+                room
             })
         } else {
             cb({

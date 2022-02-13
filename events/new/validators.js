@@ -6,14 +6,8 @@ module.exports = (socket, client) => {
         let room = states.rooms.find(r => r.code === data.code)
         
         if (room) {
-            room.players.push({
-                _id: client.id,
-                state: 'joining'
-            })
-
             cb({
                 ok: true,
-                scene: 'lobby',
             })
         } else {
             cb({

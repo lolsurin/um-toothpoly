@@ -1,5 +1,4 @@
 module.exports.rooms = []
-module.exports.clients = {}
 
 // room state
 // {

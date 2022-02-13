@@ -1,6 +1,7 @@
 module.exports = {
 	makeid,
-	removeFromAll
+	removeFromAll,
+	cleanupUponDisconnect
 }
   
 function makeid(length) {
@@ -33,4 +34,33 @@ function removeFromAll(id) {
 
 		if (room.playerCount == 0) states.rooms.splice(idx, 1)
 	})	
+}
+
+function cleanupUponDisconnect(id, socket) {
+	console.log(`cleaning up upon disconnect: ${id}`)
+	
+	let states = require("./states")
+	let rooms = states.rooms
+
+	let roomIdx = rooms.findIndex(room => room.players.findIndex(player => player._id == id) > -1)
+
+	console.log(`player is from room: ${rooms[roomIdx]}`)
+
+	
+
+	if (roomIdx > -1) {
+		let room = rooms[roomIdx]
+		let playerIdx = room.players.findIndex(player => player._id == id)
+		if (playerIdx > -1) {
+			room.players.splice(playerIdx, 1) // remove player from room
+		}
+		if (room.playerCount == 0) {
+			rooms.splice(roomIdx, 1)
+		} else {
+			socket.in(room.code).emit('game:data:update', room)
+		}
+	}
+	
+	console.log(`cleanup complete, current states`)
+	console.log(states)
 }
