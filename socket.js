@@ -7,6 +7,9 @@ const gameSocket = (socket) => {
         // emit to the newly connected client the existing count 
         console.log(`connected    : <${client.id}>`)
 
+        require('./events/new/events')(socket, client)
+        require('./events/new/validators')(socket, client)
+
         require('./events/newGame')(client)
         require('./events/joinGame')(socket, client)
         require('./events/leaveGame')(socket, client)
