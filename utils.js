@@ -1,7 +1,8 @@
 module.exports = {
 	makeid,
 	removeFromAll,
-	cleanupUponDisconnect
+	cleanupUponDisconnect,
+	move
 }
   
 function makeid(length) {
@@ -54,3 +55,47 @@ function cleanupUponDisconnect(id, socket) {
 		}
 	}
 }
+
+function move(from, to, direct) {
+	let leftMotionArray = []
+	let bottomMotionArray = []
+
+	if (direct) {
+		let [fromX, fromY] = getRelPos(from)
+		let [toX, toY] = getRelPos(to)
+		leftMotionArray.push(fromX)
+		leftMotionArray.push(toX)
+		bottomMotionArray.push(fromY)
+		bottomMotionArray.push(toY)
+	} else {
+		for (let i = from; i <= to; i++) {
+			if (i > 100) {
+				let [x, y] = getRelPos(200 - i);
+				leftMotionArray.push(x);
+				bottomMotionArray.push(y);
+			} else {
+				let [x, y] = getRelPos(i);
+				leftMotionArray.push(x);
+				bottomMotionArray.push(y);
+			}
+		}
+	}
+
+	return {
+		left: leftMotionArray,
+		bottom: bottomMotionArray
+	}
+}
+  
+	function getRelPos(tile) {
+			tile-=1
+			let ones = tile % 10;
+			let tens = Math.floor(tile / 10);
+		
+			let x_rel = tens % 2 === 0 ? ones + 0.5 : 10 - (ones + 0.5);
+			let y_rel = tens + 0.5;
+		
+			//if (y_rel > 10) y_rel = 9.5
+		
+			return [x_rel * 10 + "%", y_rel * 10 + "%"];
+	}
