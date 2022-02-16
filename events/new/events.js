@@ -92,22 +92,35 @@ module.exports = (socket, client) => {
     })
 
     client.on('game:diceRoll', () => {
-
+        console.log(`game:diceRoll from ${client.id}`)
         let [room, player_idx] = getRoomAndIndex(client.id)
+
+        room.scene = 'moving'
 
         let dice = Math.floor(Math.random() * 6) + 1
 
         let from = room.players[player_idx].position
         room.players[player_idx].position += dice // move player
-        room.turn = (room.turn + 1) % room.players.length // change turn
         room.players[player_idx].motion = move(from, room.players[player_idx].position, false)
+
+        //room.turn = (room.turn + 1) % room.players.length
 
         if (room.players[player_idx].position > 100) {
             room.players[player_idx].position = 200 - room.players[player_idx].position
-        }
+        } 
 
         socket.in(room.code).emit('game:data:update', room)
-        console.log(`server received game:diceRoll from ${client.id}`)
+        
+    })
+
+    client.on('game:diceRollComplete', () => {
+        console.log(`game:diceRollComplete from ${client.id}`)
+        let [room, player_idx] = getRoomAndIndex(client.id)
+        room.scene = 'game'
+
+        room.turn = (room.turn + 1) % room.players.length
+        
+        socket.in(room.code).emit('game:data:update', room)
     })
 
 }
