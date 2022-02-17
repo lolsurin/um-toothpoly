@@ -12,6 +12,10 @@ function getRoomAndIndex(id) {
     return [room, player_idx]
 }
 
+function getRandomQuestion() {
+    return questions[Math.floor(Math.random() * questions.length)]
+}
+
 module.exports = (socket, client) => {
 
     client.on('game:new', (callback) => {
@@ -20,6 +24,8 @@ module.exports = (socket, client) => {
         let room = {
             code,
             scene: 'lobby',
+            question: getRandomQuestion(),
+            rule: null,
             players: [],
         }
 
@@ -113,7 +119,24 @@ module.exports = (socket, client) => {
         
     })
 
-    client.on('game:diceRollComplete', () => {
+    ///////////////////MOVE TO 14///////
+    client.on('game:dev:14', () => {
+        console.log(`game:dev:14 from ${client.id}`)
+        let [room, player_idx] = getRoomAndIndex(client.id)
+
+        room.scene = 'moving'
+
+        room.players[player_idx].position = 20 // move player
+        room.players[player_idx].motion = move(1, 20, true)
+
+
+        socket.in(room.code).emit('game:data:update', room)
+        
+    })
+
+    /////////////////////////////////////////////
+
+    client.on('game:nextTurn', () => {
         console.log(`game:diceRollComplete from ${client.id}`)
         let [room, player_idx] = getRoomAndIndex(client.id)
         room.scene = 'game'
@@ -123,4 +146,28 @@ module.exports = (socket, client) => {
         socket.in(room.code).emit('game:data:update', room)
     })
 
+    client.on('game:event', rule => {
+        console.log(`game:event from ${client.id}`)
+        let [room, player_idx] = getRoomAndIndex(client.id) // get room and player index
+        
+        room.scene = 'event' // set scene to event
+        room.question = getRandomQuestion() // get random question
+        room.rule = rule // set rule
+
+        socket.in(room.code).emit('game:data:update', room) // emit event to all players (so question can be shown)
+    })
+
+    client.on('game:submitAnswer', (correct) => {
+        console.log(`game:submitAnswer from ${client.id}`)
+        let [room, player_idx] = getRoomAndIndex(client.id) // get room and player index
+
+        if (correct && room.rule.event === 'ladder' || !correct && room.rule.event === 'snake') {
+            room.players[player_idx].motion = move(room.players[player_idx].position, room.rule.to, true)
+            room.players[player_idx].position = room.rule.to
+        }
+
+        room.scene = 'game' // set scene to game
+
+        socket.in(room.code).emit('game:data:update', room)
+    })
 }
