@@ -113,7 +113,9 @@ module.exports = (socket, client) => {
 
         if (room.players[player_idx].position > 100) {
             room.players[player_idx].position = 200 - room.players[player_idx].position
-        } 
+        }
+
+        if (room.players[player_idx].position === 100) room.players[player_idx].is_winner = true
 
         socket.in(room.code).emit('game:data:update', room)
         
@@ -133,8 +135,6 @@ module.exports = (socket, client) => {
         socket.in(room.code).emit('game:data:update', room)
         
     })
-
-    /////////////////////////////////////////////
 
     client.on('game:nextTurn', () => {
         console.log(`game:diceRollComplete from ${client.id}`)
@@ -161,7 +161,7 @@ module.exports = (socket, client) => {
         console.log(`game:submitAnswer from ${client.id}`)
         let [room, player_idx] = getRoomAndIndex(client.id) // get room and player index
 
-        if (correct && room.rule.event === 'ladder' || !correct && room.rule.event === 'snake') {
+        if (correct && room.rule.event === 'challenge' || !correct && room.rule.event === 'chance') {
             room.players[player_idx].motion = move(room.players[player_idx].position, room.rule.to, true)
             room.players[player_idx].position = room.rule.to
 

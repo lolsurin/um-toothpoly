@@ -18,9 +18,9 @@ const io = new Server(httpServer, {
 gameSocket(io)
 
 const PORT = process.env.PORT || 5000
-//const INDEX = 'build/index.html';
+const INDEX = 'build/index.html';
 
-//app.use((req, res) => res.sendFile(INDEX, { root: __dirname }))
+app.use((req, res) => res.sendFile(INDEX, { root: __dirname }))
 
 httpServer.listen(PORT, () => {
   console.log(`server listening on port ${PORT}`)

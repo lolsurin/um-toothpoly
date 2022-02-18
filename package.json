@@ -1,11 +1,12 @@
 {
-  "name": "server",
+  "name": "um-toothpoly",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
+    "prod": "NODE_ENV=production node app.js",
     "heroku-postbuild": "cd client && npm i && npm run build"
   },
   "engines": {

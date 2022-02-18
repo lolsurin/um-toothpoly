@@ -94,7 +94,7 @@ module.exports = function(socket, client) {
         let room = states.rooms[room_idx]
         let player_idx = room.players.findIndex(player => player.id == client.id)
 
-        if (data.rule.event === 'ladder' && correct || data.rule.event === 'snake' && !correct) {
+        if (data.rule.event === 'challenge' && correct || data.rule.event === 'chance' && !correct) {
             room.players[player_idx].position = data.rule.to
             room.players[player_idx].goDirectly = true
         }
