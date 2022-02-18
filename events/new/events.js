@@ -157,17 +157,26 @@ module.exports = (socket, client) => {
         socket.in(room.code).emit('game:data:update', room) // emit event to all players (so question can be shown)
     })
 
-    client.on('game:submitAnswer', (correct) => {
+    client.on('game:submitAnswer', (correct, callback) => {
         console.log(`game:submitAnswer from ${client.id}`)
         let [room, player_idx] = getRoomAndIndex(client.id) // get room and player index
 
         if (correct && room.rule.event === 'ladder' || !correct && room.rule.event === 'snake') {
             room.players[player_idx].motion = move(room.players[player_idx].position, room.rule.to, true)
             room.players[player_idx].position = room.rule.to
+
+            room.scene = 'game' // set scene to game
+            socket.in(room.code).emit('game:data:update', room)
+        } else {
+            callback({
+                ok:true
+            })
         }
 
-        room.scene = 'game' // set scene to game
+        
 
-        socket.in(room.code).emit('game:data:update', room)
+        // if wrong, manually send nextTurn on client
+
+        
     })
 }
