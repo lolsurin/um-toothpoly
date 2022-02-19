@@ -9,15 +9,14 @@
     "prod": "NODE_ENV=production node app.js",
     "heroku-postbuild": "cd client && npm i && npm run build"
   },
-  "engines": {
-    "node": ">14.x",
-    "npm": "8.x"
+  "engines" : {
+    "node": "14.18.3"
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "socket.io": "^4.2.0"
+    "express": "latest",
+    "socket.io": "latest"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "latest"
   }
 }
