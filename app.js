@@ -13,6 +13,7 @@ const io = new Server(httpServer, {
   //   origin: ["ws://localhost:3000"],
   //   methods: ["GET", "POST"]
   // }
+  'pingTimeout': 60000, 'pingInterval': 25000
 })
 
 gameSocket(io)
