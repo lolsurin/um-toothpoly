@@ -8,6 +8,9 @@ function getRoom(id) {
 
 function getRoomAndIndex(id) {
     let room = rooms.find(r => r.players.find(p => p._id === id))
+
+    if (!room) return [null, null]
+
     let player_idx = room.players.findIndex(p => p._id === id)
     return [room, player_idx]
 }
@@ -99,7 +102,15 @@ module.exports = (socket, client) => {
 
     client.on('game:diceRoll', () => {
         console.log(`game:diceRoll from ${client.id}`)
+
+        // to check if connected
         let [room, player_idx] = getRoomAndIndex(client.id)
+
+        if (!room) {
+            console.log(`${client.id} is not in a room`)
+            socket.emit('game:disconnected')
+            return
+        }
 
         room.scene = 'moving'
 
@@ -137,7 +148,7 @@ module.exports = (socket, client) => {
     })
 
     client.on('game:nextTurn', () => {
-        console.log(`game:diceRollComplete from ${client.id}`)
+        console.log(`game:nextTurn from ${client.id}`)
         let [room, player_idx] = getRoomAndIndex(client.id)
         room.scene = 'game'
 
