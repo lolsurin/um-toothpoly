@@ -1,4 +1,4 @@
-const { removeFromAll, cleanupUponDisconnect } = require('./utils');
+const { cleanupUponDisconnect } = require('./utils');
 
 console.log('socket started')
 
@@ -21,10 +21,13 @@ const gameSocket = (socket) => {
 
         client.on('disconnect', () => {
             console.log(`disconnected : <${client.id}>`)
-            //removeFromAll(client.id)
             cleanupUponDisconnect(client.id, socket)
         })        
     });
+
+    socket.on('reconnect', (client) => {
+        console.log(`reconnected : <${client.id}>`)
+    })
 
     socket.on('error', function (err) {
         console.log(err);
