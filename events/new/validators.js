@@ -5,15 +5,26 @@ module.exports = (socket, client) => {
     client.on('validate:room', (data, cb) => {
         let room = states.find(r => r.code === data.code)
         
-        if (room) {
+        if (!room) {
             cb({
-                ok: true,
+                ok: false,
+                error: "Room not found"
             })
-        } else {
-            cb({
-                ok: false
-            })
+            return
         }
+
+        if (room.players.length >= 4) {
+            cb({
+                ok: false,
+                error: "Room is full"
+            })
+            return
+        }
+
+        cb({
+            ok: true,
+        })
+
 
     })
 

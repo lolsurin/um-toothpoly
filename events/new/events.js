@@ -152,8 +152,10 @@ module.exports = (socket, client) => {
         let [room, player_idx] = getRoomAndIndex(client.id)
         room.scene = 'game'
 
-        room.turn = (room.turn + 1) % room.players.length
-        
+        do {
+            room.turn = (room.turn + 1) % room.players.length
+        } while (room.players[room.turn].is_winner)
+
         socket.in(room.code).emit('game:data:update', room)
     })
 
