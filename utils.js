@@ -38,22 +38,23 @@ function removeFromAll(id) {
 }
 
 function cleanupUponDisconnect(id, socket) {	
-	let rooms = require("./states")
+	// let rooms = require("./states")
 
-	let roomIdx = rooms.findIndex(room => room.players.findIndex(player => player._id == id) > -1)
+	// let roomIdx = rooms.findIndex(room => room.players.findIndex(player => player._id == id) > -1)
 
-	if (roomIdx > -1) {
-		let room = rooms[roomIdx]
-		let playerIdx = room.players.findIndex(player => player._id == id)
-		if (playerIdx > -1) {
-			room.players.splice(playerIdx, 1) // remove player from room
-		}
-		if (room.playerCount == 0) {
-			rooms.splice(roomIdx, 1)
-		} else {
-			socket.in(room.code).emit('game:data:update', room)
-		}
-	}
+	// if (roomIdx > -1) {
+	// 	let room = rooms[roomIdx]
+	// 	let playerIdx = room.players.findIndex(player => player._id == id)
+	// 	if (playerIdx > -1) {
+	// 		room.players.splice(playerIdx, 1) // remove player from room
+	// 	}
+	// 	if (room.playerCount == 0) {
+	// 		rooms.splice(roomIdx, 1)
+	// 	} else {
+	// 		socket.in(room.code).emit('game:data:update', room)
+	// 	}
+	// }
+	console.log(require("./states").rooms)
 }
 
 function move(from, to, direct) {
@@ -80,6 +81,8 @@ function move(from, to, direct) {
 			}
 		}
 	}
+
+	console.log(`${direct} ${leftMotionArray}`)
 
 	return {
 		left: leftMotionArray,
