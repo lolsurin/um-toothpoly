@@ -33,7 +33,7 @@ module.exports = (socket, client) => {
         }
 
         rooms.push(room)
-
+        console.log(rooms)
         callback({code})
 
     })
@@ -91,6 +91,7 @@ module.exports = (socket, client) => {
             player.score = 0,
             player.position = 1,
             player.is_winner = false
+            player.podium = -1
             player.motion = {
                 left: `5%`,
                 bottom: `5%`
@@ -118,6 +119,7 @@ module.exports = (socket, client) => {
 
         let from = room.players[player_idx].position
         room.players[player_idx].position += dice // move player
+        console.log(`moving from ${from} to ${room.players[player_idx].position}`)
         room.players[player_idx].motion = move(from, room.players[player_idx].position, false)
 
         //room.turn = (room.turn + 1) % room.players.length
@@ -126,7 +128,18 @@ module.exports = (socket, client) => {
             room.players[player_idx].position = 200 - room.players[player_idx].position
         }
 
-        if (room.players[player_idx].position === 100) room.players[player_idx].is_winner = true
+        if (room.players[player_idx].position === 100) {
+            let winOrder = room.players.findIndex(p => p.is_winner === true)
+            room.players[player_idx].is_winner = true
+            if(winOrder === -1) {
+                room.players[player_idx].podium = 0
+            } else {
+                room.players[player_idx].podium = winOrder + 1
+            }
+            if (room.players.findIndex(p => p.is_winner === false) === -1) {
+                room.scene = 'end'
+            }
+        }
 
         socket.in(room.code).emit('game:data:update', room)
         
@@ -139,8 +152,8 @@ module.exports = (socket, client) => {
 
         room.scene = 'moving'
 
-        room.players[player_idx].position = 20 // move player
-        room.players[player_idx].motion = move(1, 20, true)
+        room.players[player_idx].position = 100 // move player
+        room.players[player_idx].motion = move(1, 100, true)
 
 
         socket.in(room.code).emit('game:data:update', room)
@@ -191,5 +204,21 @@ module.exports = (socket, client) => {
         // if wrong, manually send nextTurn on client
 
         
+    })
+
+    client.on('game:leave_', () => {
+        console.log(`game:leave from ${client.id}`)
+
+        let [room, player_idx] = getRoomAndIndex(client.id)
+        client.leave(room.code)
+
+        room.players.splice(player_idx, 1)
+
+        if (room.players.length === 0) {
+            let roomIdx = rooms.findIndex(r => r.code !== room.code)
+            rooms.splice(roomIdx, 1)
+        } else {
+            socket.in(room.code).emit('game:data:update', room)
+        }      
     })
 }
