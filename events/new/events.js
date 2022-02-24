@@ -101,8 +101,8 @@ module.exports = (socket, client) => {
         socket.in(room.code).emit('game:starting')
     })
 
-    client.on('game:diceRoll', () => {
-        console.log(`game:diceRoll from ${client.id}`)
+    client.on('game:diceRoll', (roll) => {
+        console.log(`game:diceRoll from ${client.id} (${roll})`)
 
         // to check if connected
         let [room, player_idx] = getRoomAndIndex(client.id)
@@ -115,7 +115,8 @@ module.exports = (socket, client) => {
 
         room.scene = 'moving'
 
-        let dice = Math.floor(Math.random() * 6) + 1
+        //let dice = Math.floor(Math.random() * 6) + 1
+        let dice = roll
 
         let from = room.players[player_idx].position
         room.players[player_idx].position += dice // move player
