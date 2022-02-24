@@ -21,7 +21,6 @@ const gameSocket = (socket) => {
 
         client.on('disconnect', () => {
             console.log(`disconnected : <${client.id}>`)
-            cleanupUponDisconnect(client.id, socket)
         })        
     });
 

@@ -33,7 +33,6 @@ module.exports = (socket, client) => {
         }
 
         rooms.push(room)
-        console.log(rooms)
         callback({code})
 
     })
