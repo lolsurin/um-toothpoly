@@ -21,6 +21,13 @@ module.exports = (socket, client) => {
             return
         }
 
+        if (room.scene !== 'lobby') {
+            cb({
+                ok: false,
+                error: "Game has started"
+            })
+        }
+
         cb({
             ok: true,
         })
