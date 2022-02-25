@@ -197,20 +197,14 @@ module.exports = (socket, client) => {
             callback({
                 ok:true
             })
-        }
-
-        
-
-        // if wrong, manually send nextTurn on client
-
-        
+        }        
     })
 
     client.on('game:leave_', () => {
         console.log(`game:leave from ${client.id}`)
 
         let [room, player_idx] = getRoomAndIndex(client.id)
-        client.leave(room.code)
+        
 
         room.players.splice(player_idx, 1)
 
@@ -218,7 +212,16 @@ module.exports = (socket, client) => {
             let roomIdx = rooms.findIndex(r => r.code !== room.code)
             rooms.splice(roomIdx, 1)
         } else {
+            if (room.turn === player_idx) {
+                room.scene = 'game'
+                do {
+                    room.turn = (room.turn + 1) % room.players.length
+                } while (room.players[room.turn].is_winner)
+            }
             socket.in(room.code).emit('game:data:update', room)
-        }      
+            
+        }
+
+        client.leave(room.code)
     })
 }
