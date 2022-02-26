@@ -1,4 +1,5 @@
 const states = require("../../states")
+const { getRoomAndIndex, cleanupUponDisconnect } = require('../../utils')
 
 module.exports = (socket, client) => {
 
@@ -33,6 +34,15 @@ module.exports = (socket, client) => {
         })
 
 
+    })
+
+    client.on('validate:client', () => {
+        let [room, playerIdx] = getRoomAndIndex(client.id)
+
+        if (!room) return
+        
+        
+        cleanupUponDisconnect(client, socket)
     })
 
 }
