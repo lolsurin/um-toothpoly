@@ -22,27 +22,28 @@ const gameSocket = (socket) => {
         client.on('disconnect', () => {
             console.log(`disconnected : <${client.id}>`)
 
-            let rooms = require('./states')
-            let [room, player_idx] = getRoomAndIndex(client.id)
+            // let rooms = require('./states')
+            // let [room, player_idx] = getRoomAndIndex(client.id)
 
-            if(!room) return
+            // if(!room) return
 
-            room.players.splice(player_idx, 1)
+            // room.players.splice(player_idx, 1)
 
-            if (room.players.length === 0) {
-                let roomIdx = rooms.findIndex(r => r.code !== room.code)
-                rooms.splice(roomIdx, 1)
-            } else {
-                if (room.turn === player_idx) {
-                    room.scene = 'game'
-                    do {
-                        room.turn = (room.turn + 1) % room.players.length
-                    } while (room.players[room.turn].is_winner)
-                }
-                socket.in(room.code).emit('game:data:update', room)
-            }
+            // if (room.players.length === 0) {
+            //     let roomIdx = rooms.findIndex(r => r.code !== room.code)
+            //     rooms.splice(roomIdx, 1)
+            // } else {
+            //     if (room.turn === player_idx) {
+            //         room.scene = 'game'
+            //         do {
+            //             room.turn = (room.turn + 1) % room.players.length
+            //         } while (room.players[room.turn].is_winner)
+            //     }
+            //     socket.in(room.code).emit('game:data:update', room)
+            // }
 
-            client.leave(room.code)
+            // client.leave(room.code)
+            cleanupUponDisconnect(client, socket)
         })        
     });
 

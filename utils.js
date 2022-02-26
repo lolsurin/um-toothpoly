@@ -47,24 +47,33 @@ function removeFromAll(id) {
 	})	
 }
 
-function cleanupUponDisconnect(id, socket) {	
-	// let rooms = require("./states")
+function cleanupUponDisconnect(client, socket) {	
+	console.log(`cleanupUponDisconnect from ${client.id}`)
+	let rooms = require('./states')
+	let [room, player_idx] = getRoomAndIndex(client.id)
+	
+	if (!room) {
+		console.log(`cleanupUponDisconnect: no room found for ${client.id}`)
+		return
+	}
 
-	// let roomIdx = rooms.findIndex(room => room.players.findIndex(player => player._id == id) > -1)
+	room.players[player_idx].active = false
 
-	// if (roomIdx > -1) {
-	// 	let room = rooms[roomIdx]
-	// 	let playerIdx = room.players.findIndex(player => player._id == id)
-	// 	if (playerIdx > -1) {
-	// 		room.players.splice(playerIdx, 1) // remove player from room
-	// 	}
-	// 	if (room.playerCount == 0) {
-	// 		rooms.splice(roomIdx, 1)
-	// 	} else {
-	// 		socket.in(room.code).emit('game:data:update', room)
-	// 	}
-	// }
-	console.log(require("./states").rooms)
+	if (room.players.length === room.players.filter(p => !p.active).length) {
+		let roomIdx = rooms.findIndex(r => r.code !== room.code)
+		rooms.splice(roomIdx, 1)
+	} else {
+		if (room.turn === player_idx) {
+			room.scene = 'game'
+			do {
+				room.turn = (room.turn + 1) % room.players.length
+			} while (room.players[room.turn].is_winner && room.players[room.turn].active === false)
+		}
+		socket.in(room.code).emit('game:data:update', room)
+		
+	}
+
+	client.leave(room.code)
 }
 
 function move(from, to, direct) {
