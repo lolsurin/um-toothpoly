@@ -1,6 +1,7 @@
 module.exports = {
 	makeid,
 	removeFromAll,
+	getRoomAndIndex,
 	cleanupUponDisconnect,
 	move
 }
@@ -13,6 +14,15 @@ function makeid(length) {
 		result += characters.charAt(Math.floor(Math.random() * charactersLength));
 	}
 	return result;
+}
+
+function getRoomAndIndex(id) {
+    let room = require('./states').find(r => r.players.find(p => p._id === id))
+
+    if (!room) return [null, null]
+
+    let player_idx = room.players.findIndex(p => p._id === id)
+    return [room, player_idx]
 }
 
 function removeFromAll(id) {
