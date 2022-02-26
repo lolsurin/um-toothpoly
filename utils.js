@@ -101,7 +101,7 @@ function move(from, to, direct) {
 		}
 	}
 
-	console.log(`${direct} ${leftMotionArray}`)
+	//console.log(`${direct} ${leftMotionArray}`)
 
 	return {
 		left: leftMotionArray,

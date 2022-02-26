@@ -122,7 +122,7 @@ module.exports = (socket, client) => {
 
         let from = room.players[player_idx].position
         room.players[player_idx].position += dice // move player
-        console.log(`moving from ${from} to ${room.players[player_idx].position}`)
+        //console.log(`moving from ${from} to ${room.players[player_idx].position}`)
         room.players[player_idx].motion = move(from, room.players[player_idx].position, false)
 
         //room.turn = (room.turn + 1) % room.players.length
@@ -138,8 +138,6 @@ module.exports = (socket, client) => {
                 room.scene = 'end'
             }
         }
-
-        console.log(room)
         socket.in(room.code).emit('game:data:update', room)
         
     })
