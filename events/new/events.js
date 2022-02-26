@@ -1,4 +1,4 @@
-const { makeid, move } = require("../../utils")
+const { makeid, move, cleanupUponDisconnect } = require("../../utils")
 const rooms = require("../../states")
 const questions = require("../../resources/questions")
 
@@ -27,6 +27,7 @@ module.exports = (socket, client) => {
         let room = {
             code,
             scene: 'lobby',
+            podium: [],
             question: getRandomQuestion(),
             rule: null,
             players: [],
@@ -45,6 +46,8 @@ module.exports = (socket, client) => {
             client.join(room.code)
             room.players.push({
                 _id: client.id,
+                number: room.players.length,
+                active: true,
                 name: data.name,
             })
 
@@ -87,10 +90,10 @@ module.exports = (socket, client) => {
         room.players.forEach((player) => {
             // player._id
             // player.name
-            player.score = 0,
+            // player.number = 0,
             player.position = 1,
             player.is_winner = false
-            player.podium = -1
+            player.podium = 0
             player.motion = {
                 left: `5%`,
                 bottom: `5%`
@@ -129,18 +132,14 @@ module.exports = (socket, client) => {
         }
 
         if (room.players[player_idx].position === 100) {
-            let winOrder = room.players.findIndex(p => p.is_winner === true)
             room.players[player_idx].is_winner = true
-            if(winOrder === -1) {
-                room.players[player_idx].podium = 0
-            } else {
-                room.players[player_idx].podium = winOrder + 1
-            }
-            if (room.players.findIndex(p => p.is_winner === false) === -1) {
+            room.podium.push(player_idx)
+            if (room.podium.length === room.players.length) {
                 room.scene = 'end'
             }
         }
 
+        console.log(room)
         socket.in(room.code).emit('game:data:update', room)
         
     })
@@ -167,7 +166,7 @@ module.exports = (socket, client) => {
 
         do {
             room.turn = (room.turn + 1) % room.players.length
-        } while (room.players[room.turn].is_winner)
+        } while (room.players[room.turn].is_winner || !room.players[room.turn].active)
 
         socket.in(room.code).emit('game:data:update', room)
     })
@@ -203,25 +202,26 @@ module.exports = (socket, client) => {
     client.on('game:leave_', () => {
         console.log(`game:leave from ${client.id}`)
 
-        let [room, player_idx] = getRoomAndIndex(client.id)
+        // let [room, player_idx] = getRoomAndIndex(client.id)
         
 
-        room.players.splice(player_idx, 1)
+        // room.players.splice(player_idx, 1)
 
-        if (room.players.length === 0) {
-            let roomIdx = rooms.findIndex(r => r.code !== room.code)
-            rooms.splice(roomIdx, 1)
-        } else {
-            if (room.turn === player_idx) {
-                room.scene = 'game'
-                do {
-                    room.turn = (room.turn + 1) % room.players.length
-                } while (room.players[room.turn].is_winner)
-            }
-            socket.in(room.code).emit('game:data:update', room)
+        // if (room.players.length === 0) {
+        //     let roomIdx = rooms.findIndex(r => r.code !== room.code)
+        //     rooms.splice(roomIdx, 1)
+        // } else {
+        //     if (room.turn === player_idx) {
+        //         room.scene = 'game'
+        //         do {
+        //             room.turn = (room.turn + 1) % room.players.length
+        //         } while (room.players[room.turn].is_winner)
+        //     }
+        //     socket.in(room.code).emit('game:data:update', room)
             
-        }
+        // }
 
-        client.leave(room.code)
+        // client.leave(room.code)
+        cleanupUponDisconnect(client, socket)
     })
 }
