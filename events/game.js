@@ -1,6 +1,5 @@
 const states = require("../states")
-
-
+const questions = require("../resources/questions")
 
 module.exports = function(socket, client) {
 
@@ -10,13 +9,14 @@ module.exports = function(socket, client) {
         let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
         let room = states.rooms[room_idx]       
         
+        room.answered_questions = []
         room.state = 'game'
         room.turn = 0
         room.players = room.players.map(p => ({
             ...p, 
             rank: 1, 
             score: 0,
-            position: 0,
+            position: 95,
             is_winner: false,
         }))
 
@@ -43,35 +43,56 @@ module.exports = function(socket, client) {
         } else {
             room.players[player_idx].position += steps
         }
-        
-        room.players[player_idx].goDirectly = false        
 
-        room.turn = (room.turn + 1) % room.players.length
+        room.players[player_idx].goDirectly = false
+        
         
         socket.to(states.clients[client.id]).emit('game:move', { room })
     })
 
-    client.on('game:snake', data => {
-        console.log(data.rule)
+    client.on(`game:update_player_position`, (data) => {
+        console.log(`updating player position to ${data.position}`)
         let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
         let room = states.rooms[room_idx]
 
-        room.state = 'question'
-        room.inPlay = data.rule
+        let player_idx = room.players.findIndex(player => player.id == client.id)
 
+<<<<<<< HEAD
         socket.to(states.clients[client.id]).emit('game:stage_question', { room })
         console.log(`emitted question event to client`)
         //socket.to(states.clients[client.id]).emit('game:question', { room })
+=======
+        room.players[player_idx].position = data.position
+        room.players[player_idx].goDirectly = true
+        // room.turn = (room.turn + 1) % room.players.length
+        socket.to(states.clients[client.id]).emit('game:move', { room })
+
     })
 
-    client.on('game:ladder', data => {
+    client.on(`game:change_turn`, () => {
+        let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
+        let room = states.rooms[room_idx]
+
+        room.turn = (room.turn + 1) % room.players.length
+        socket.to(states.clients[client.id]).emit('game:move', { room })
+>>>>>>> f8f8b5052bcdf72897ba8354ea6a2fc58097e894
+    })
+
+    client.on('game:snake', data => q(data))
+    client.on('game:ladder', data => q(data))
+    client.on('game:correct', data => a(data, true))
+    client.on('game:incorrect', data => a(data, false))
+
+    function q(data) {
         console.log(data.rule)
         let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
         let room = states.rooms[room_idx]
 
         room.state = 'question'
         room.inPlay = data.rule
+        room.question = getRandomQuestion()
 
+<<<<<<< HEAD
         socket.to(states.clients[client.id]).emit('game:stage_question', { room })
         console.log(`emitted question event to client`)
         //socket.to(states.clients[client.id]).emit('game:question', { room })
@@ -79,34 +100,32 @@ module.exports = function(socket, client) {
 
     client.on('game:correct', data => {
 
+=======
+        socket.to(states.clients[client.id]).emit('game:question', { room })
+    }
+>>>>>>> f8f8b5052bcdf72897ba8354ea6a2fc58097e894
 
+    function a(data, correct) {
         let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
         let room = states.rooms[room_idx]
         let player_idx = room.players.findIndex(player => player.id == client.id)
 
-        if (data.rule.event === 'ladder') {
+        if (data.rule.event === 'challenge' && correct || data.rule.event === 'chance' && !correct) {
             room.players[player_idx].position = data.rule.to
             room.players[player_idx].goDirectly = true
         }
 
         room.state = 'game'
+        room.turn = (room.turn + 1) % room.players.length
 
         socket.to(states.clients[client.id]).emit('game:move', { room })
-    })
+    }  
 
-    client.on('game:incorrect', data => {
-
-        let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
-        let room = states.rooms[room_idx]
-        let player_idx = room.players.findIndex(player => player.id == client.id)
-
-        if (data.rule.event === 'snake') {
-            room.players[player_idx].position = data.rule.to
-            room.players[player_idx].goDirectly = true
-        }
-
-        room.state = 'game'
-
-        socket.to(states.clients[client.id]).emit('game:move', { room })
-    })
 }
+
+function getRandomQuestion() {
+    let idx = Math.floor(Math.random() * questions.length)
+    return questions[idx]
+}
+
+// a function that gets a random question from questions minus already answered questions

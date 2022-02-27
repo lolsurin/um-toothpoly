@@ -1,38 +1,380 @@
 [
     {
+        "image_path": null,
         "en": {
             "question": "Toothpaste should be placed in large quantities on the entire surface of the toothbrush to ensure its effectiveness.",
             "answers": [
-                "True",
-                "False"
+                { "value": "True", "correct": false },
+                { "value": "False", "correct": true }
             ]        
         },
         "my": {
             "question": "Ubat gigi perlu diletakkan dengan banyak di keseluruhan permukaan berus gigi untuk memastikan keberkesanannya.",
             "answers": [
-                "Betul",
-                "Salah"
+                { "value": "Betul", "correct": false },
+                { "value": "Salah", "correct": true }
             ]
             
-        },
-        "correct": 1
+        }
     },
     {
+        "image_path": null,
         "en": {
             "question": "Fluoridated toothpaste does not help to strengthen teeth.",
             "answers": [
-                "True",
-                "False"
+                { "value": "True", "correct": false },
+                { "value": "False", "correct": true }
             ]        
         },
         "my": {
             "question": "Ubat gigi berfluorida tidak membantu untuk menguatkan gigi.",
             "answers": [
-                "Betul",
-                "Salah"
+                { "value": "Betul", "correct": false },
+                { "value": "Salah", "correct": true }
             ]
             
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Floss can help to clean dental plaque in between teeth.",
+            "answers": [
+                { "value": "True", "correct": true },
+                { "value": "False", "correct": false }
+            ]        
         },
-        "correct": 1
+        "my": {
+            "question": "Penggunaan floss (bebenang putih) dapat membantu membersihkan plak (tahi gigi) di celah-celah gigi.",
+            "answers": [
+                { "value": "Betul", "correct": true },
+                { "value": "Salah", "correct": false }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Brushing teeth with a hard toothbrush will clean your teeth better.",
+            "answers": [
+                { "value": "True", "correct": false },
+                { "value": "False", "correct": true }
+            ]        
+        },
+        "my": {
+            "question": "Memberus gigi menggunakan berus gigi yang keras akan membersihkan gigi dengan lebih baik.",
+            "answers": [
+                { "value": "Betul", "correct": false },
+                { "value": "Salah", "correct": true }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "The use of mouthwash alone is enough to keep the teeth clean and avoid bad breath.",
+            "answers": [
+                { "value": "True", "correct": false },
+                { "value": "False", "correct": true }
+            ]        
+        },
+        "my": {
+            "question": "Penggunaan ubat kumur- kumur sahaja adalah cukup untuk memastikan gigi sentiasa bersih dan mulut tidak berbau.",
+            "answers": [
+                { "value": "Betul", "correct": false },
+                { "value": "Salah", "correct": true }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Brushing teeth with fluoridated toothpaste can form a protective layer on the enamel surface that can prevent tooth decay.",
+            "answers": [
+                { "value": "True", "correct": true },
+                { "value": "False", "correct": false }
+            ]        
+        },
+        "my": {
+            "question": "Memberus gigi dengan ubat gigi berfluorida dapat membentuk lapisan perlindungan di permukaan enamel yang boleh mencegah gigi dari menjadi rosak.",
+            "answers": [
+                { "value": "Betul", "correct": true },
+                { "value": "Salah", "correct": false }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Milk teeth do not help to guide the growth of permanent teeth.",
+            "answers": [
+                { "value": "True", "correct": false },
+                { "value": "False", "correct": true }
+            ]        
+        },
+        "my": {
+            "question": "Gigi susu tidak menolong untuk memandu pertumbuhan gigi kekal.",
+            "answers": [
+                { "value": "Betul", "correct": false },
+                { "value": "Salah", "correct": true }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Toothbrush should be rinsed until it is clean and stored properly in a dry place.",
+            "answers": [
+                { "value": "True", "correct": true },
+                { "value": "False", "correct": false }
+            ]        
+        },
+        "my": {
+            "question": "Berus gigi hendaklah dibilas sehingga bersih dan disimpan di tempat yang kering.",
+            "answers": [
+                { "value": "Betul", "correct": true },
+                { "value": "Salah", "correct": false }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "When sugar is consumed a lot, it interacts with bacteria in the plaque to produce acid and damage the enamel surface creating a cavity/ tooth decay.",
+            "answers": [
+                { "value": "True", "correct": true },
+                { "value": "False", "correct": false }
+            ]        
+        },
+        "my": {
+            "question": "Apabila gula dimakan secara berlebihan, ia berinterasi dengan bakteria di dalam plak untuk menghasilkan asid dan merosakkan lapisan enamel menyebab kaviti/gigi rosak.",
+            "answers": [
+                { "value": "Betul", "correct": true },
+                { "value": "Salah", "correct": false }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Processed foods such as burgers, sausages and nuggets are healthy foods and contain all the nutrients the body needs.",
+            "answers": [
+                { "value": "True", "correct": false },
+                { "value": "False", "correct": true }
+            ]        
+        },
+        "my": {
+            "question": "Makanan yang diproses seperti burger, sosej dan nuget adalah makanan yang sihat dan mengandungi semua nutrien yang diperlukan oleh badan.",
+            "answers": [
+                { "value": "Betul", "correct": false },
+                { "value": "Salah", "correct": true }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Sweetened condensed milk is fresh milk that has low sugar content.",
+            "answers": [
+                { "value": "True", "correct": false },
+                { "value": "False", "correct": true }
+            ]        
+        },
+        "my": {
+            "question": "Susu pekat manis adalah susu segar yang mempunyai kandungan gula yang rendah.",
+            "answers": [
+                { "value": "Betul", "correct": false },
+                { "value": "Salah", "correct": true }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Sugar is a type of carbohydrate.",
+            "answers": [
+                { "value": "True", "correct": false },
+                { "value": "False", "correct": true }
+            ]        
+        },
+        "my": {
+            "question": "Gula adalah sejenis karbohidrat.",
+            "answers": [
+                { "value": "Betul", "correct": false },
+                { "value": "Salah", "correct": true }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Drinking carbonated drinks is good for teeth because it helps strengthen our teeth.",
+            "answers": [
+                { "value": "True", "correct": false },
+                { "value": "False", "correct": true }
+            ]        
+        },
+        "my": {
+            "question": "Minum minuman berkarbonat adalah bagus untuk kesihatan gigi kerana ia membantu menguatkan gigi. ",
+            "answers": [
+                { "value": "Betul", "correct": false },
+                { "value": "Salah", "correct": true }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Bleeding gums are one of the signs of unhealthy gums.",
+            "answers": [
+                { "value": "True", "correct": true },
+                { "value": "False", "correct": false }
+            ]        
+        },
+        "my": {
+            "question": "Gusi berdarah adalah salah satu tanda gusi yang tidak sihat. ",
+            "answers": [
+                { "value": "Betul", "correct": true },
+                { "value": "Salah", "correct": false }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Ulcers that do not heal after 2 weeks require further examination by a dentist.",
+            "answers": [
+                { "value": "True", "correct": true },
+                { "value": "False", "correct": false }
+            ]        
+        },
+        "my": {
+            "question": "Ulser (mulut pecah) yang tidak sembuh selepas 2 minggu memerlukan pemeriksaan lanjut oleh doktor gigi.",
+            "answers": [
+                { "value": "Betul", "correct": true },
+                { "value": "Salah", "correct": false }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Dental plaque if not cleaned can cause gum disease.",
+            "answers": [
+                { "value": "True", "correct": true },
+                { "value": "False", "correct": false }
+            ]        
+        },
+        "my": {
+            "question": "Plak (tahi gigi) yang tidak dibersihkan boleh menyebabkan penyakit gusi.",
+            "answers": [
+                { "value": "Betul", "correct": true },
+                { "value": "Salah", "correct": false }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Dental treatment can be done at homes, hotels and beauty saloons by an unqualified person.",
+            "answers": [
+                { "value": "True", "correct": false },
+                { "value": "False", "correct": true }
+            ]        
+        },
+        "my": {
+            "question": "Rawatan gigi boleh dilakukan di rumah, hotel dan pusat kecantikan oleh seseorang yang tidak bertauliah.",
+            "answers": [
+                { "value": "Betul", "correct": false },
+                { "value": "Salah", "correct": true }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Among the signs of unhealthy teeth are white, brown or black spots on the tooth surfaces.",
+            "answers": [
+                { "value": "True", "correct": true },
+                { "value": "False", "correct": false }
+            ]        
+        },
+        "my": {
+            "question": "Antara tanda- tanda gigi yang tidak sihat adalah bintik/ tompok bewarna putih, coklat atau hitam di atas permukaan gigi.",
+            "answers": [
+                { "value": "Betul", "correct": true },
+                { "value": "Salah", "correct": false }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Untreated gum disease can cause teeth to become loose.",
+            "answers": [
+                { "value": "True", "correct": true },
+                { "value": "False", "correct": false }
+            ]        
+        },
+        "my": {
+            "question": "Penyakit gusi yang tidak di rawat boleh menyebabkan gigi bergoyang.",
+            "answers": [
+                { "value": "Betul", "correct": true },
+                { "value": "Salah", "correct": false }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Dental examination and treatment can only be performed by a qualified dentist.",
+            "answers": [
+                { "value": "True", "correct": true },
+                { "value": "False", "correct": false }
+            ]        
+        },
+        "my": {
+            "question": "Pemeriksaan dan rawatan di klinik gigi hanya boleh dijalankan oleh doktor gigi bertauliah sahaja.",
+            "answers": [
+                { "value": "Betul", "correct": true },
+                { "value": "Salah", "correct": false }
+            ]
+            
+        }
+    },
+    {
+        "image_path": null,
+        "en": {
+            "question": "Fluoride is a mineral added in toothpaste that forms a protective layer on the enamel surface to prevent tooth decay.",
+            "answers": [
+                { "value": "True", "correct": true },
+                { "value": "False", "correct": false }
+            ]        
+        },
+        "my": {
+            "question": "Fluorida adalah bahan yang terdapat dalam ubat gigi yang membentuk lapisan perlindungan di permukaan enamel bagi mencegah kerosakan gigi.",
+            "answers": [
+                { "value": "Betul", "correct": true },
+                { "value": "Salah", "correct": false }
+            ]
+            
+        }
     }
 ]

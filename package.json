@@ -1,22 +1,19 @@
 {
-  "name": "server",
+  "name": "um-toothpoly",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
+    "prod": "NODE_ENV=production node app.js",
     "heroku-postbuild": "cd client && npm i && npm run build"
   },
-  "engines": {
-    "node": "17.x",
-    "npm": "8.x"
-  },
   "dependencies": {
-    "express": "^4.17.1",
-    "socket.io": "^4.2.0"
+    "express": "latest",
+    "socket.io": "latest"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "latest"
   }
 }

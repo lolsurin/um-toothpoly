@@ -1,11 +1,11 @@
-module.exports.rooms = []
-module.exports.clients = {}
+module.exports = []
 
 // room state
 // {
 //     roomName: 'MZ1SH',
 //     playerCount: 1,
 //     state: 'lobby|game|question|end',
+//     answered_questions: [],
 //     players: [
 //       {
 //         id: 'ru_mqRfjz819jjEGAAAH',
