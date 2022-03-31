@@ -69,10 +69,13 @@ function cleanupUponDisconnect(client, socket) {
 				room.turn = (room.turn + 1) % room.players.length
 			} while (room.players[room.turn].is_winner && room.players[room.turn].active === false)
 		}
-		socket.in(room.code).emit('game:data:update', room)
-		
-	}
 
+		if (room.scene = 'lobby') room.players.splice(player_idx, 1)
+
+		socket.in(room.code).emit('game:data:update', room)
+	}
+	//console.log(room)
+	
 	client.leave(room.code)
 }
 

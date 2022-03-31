@@ -67,14 +67,17 @@ module.exports = (socket, client) => {
     })
 
     client.on('game:data:fetch', (cb) => {
+        
         let room = getRoom(client.id)     
 
         if (room) {
+            console.log(room)
             cb({
                 ok: true,
                 room
             })
         } else {
+            console.log(room)
             cb({
                 ok: false
             })

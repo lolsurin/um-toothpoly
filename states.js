@@ -6,6 +6,7 @@ module.exports = []
 //     playerCount: 1,
 //     state: 'lobby|game|question|end',
 //     answered_questions: [],
+//     turn: 0
 //     players: [
 //       {
 //         id: 'ru_mqRfjz819jjEGAAAH',
@@ -23,5 +24,4 @@ module.exports = []
 //         is_winner: false
 //       }
 //     ],
-//     turn: 0
 //   }
