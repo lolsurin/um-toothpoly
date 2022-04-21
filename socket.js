@@ -10,14 +10,14 @@ const gameSocket = (socket) => {
         require('./events/new/events')(socket, client)
         require('./events/new/validators')(socket, client)
 
-        require('./events/newGame')(client)
-        require('./events/joinGame')(socket, client)
-        require('./events/leaveGame')(socket, client)
+        // require('./events/newGame')(client)
+        // require('./events/joinGame')(socket, client)
+        // require('./events/leaveGame')(socket, client)
         //require('./events/startGame')(socket, client)
 
-        require('./events/game')(socket, client)
+        // require('./events/game')(socket, client)
 
-        require('./events/testEvents')(socket, client)
+        // require('./events/testEvents')(socket, client)
 
         client.on('disconnect', () => {
             console.log(`disconnected : <${client.id}>`)

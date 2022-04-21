@@ -1,4 +1,4 @@
-const states = require("../states")
+const states = require("../../states")
 const questions = require("../resources/questions")
 
 module.exports = function(socket, client) {

@@ -59,10 +59,16 @@ function cleanupUponDisconnect(client, socket) {
 
 	room.players[player_idx].active = false
 
+	// if no active players left
 	if (room.players.length === room.players.filter(p => !p.active).length) {
 		let roomIdx = rooms.findIndex(r => r.code !== room.code)
 		rooms.splice(roomIdx, 1)
-	} else {
+	} else { // if there are active players
+
+		// give up slot
+		room.availableSlots.push(room.players[player_idx].slot)
+
+		 // change turn if it was this player's turn
 		if (room.turn === player_idx) {
 			room.scene = 'game'
 			do {
