@@ -23,6 +23,6 @@ const INDEX = 'build/index.html';
 
 app.use((req, res) => res.sendFile(INDEX, { root: __dirname }))
 
-httpServer.listen(PORT, () => {
+httpServer.listen(PORT, '0.0.0.0', () => {
   console.log(`server listening on port ${PORT}`)
 })
