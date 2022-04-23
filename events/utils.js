@@ -1,9 +1,31 @@
+const rooms = require("../store")
+const questions = require("../resources/questions")
+
 module.exports = {
 	makeid,
 	removeFromAll,
+	getRoom,
 	getRoomAndIndex,
+	getRandomQuestion,
 	cleanupUponDisconnect,
 	move
+}
+
+function getRoom(id) {
+    return rooms.find(r => r.players.find(p => p._id === id))
+}
+
+function getRoomAndIndex(id) {
+    let room = rooms.find(r => r.players.find(p => p._id === id))
+
+    if (!room) return [null, null]
+
+    let player_idx = room.players.findIndex(p => p._id === id)
+    return [room, player_idx]
+}
+
+function getRandomQuestion() {
+    return questions[Math.floor(Math.random() * questions.length)]
 }
   
 function makeid(length) {
@@ -16,17 +38,8 @@ function makeid(length) {
 	return result;
 }
 
-function getRoomAndIndex(id) {
-    let room = require('./states').find(r => r.players.find(p => p._id === id))
-
-    if (!room) return [null, null]
-
-    let player_idx = room.players.findIndex(p => p._id === id)
-    return [room, player_idx]
-}
-
 function removeFromAll(id) {
-	let states = require("./states")
+	let states = require("../store")
 
 	delete states.clients[id]
 
@@ -49,7 +62,7 @@ function removeFromAll(id) {
 
 function cleanupUponDisconnect(client, socket) {	
 	console.log(`cleanupUponDisconnect from ${client.id}`)
-	let rooms = require('./states')
+	let rooms = require('../store')
 	let [room, player_idx] = getRoomAndIndex(client.id)
 	
 	if (!room) {

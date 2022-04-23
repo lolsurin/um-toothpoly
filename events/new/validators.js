@@ -1,5 +1,5 @@
-const rooms = require("../../states")
-const { getRoomAndIndex, cleanupUponDisconnect } = require('../../utils')
+const rooms = require("../../store")
+const { getRoomAndIndex, cleanupUponDisconnect } = require('../utils')
 
 module.exports = (socket, client) => {
 

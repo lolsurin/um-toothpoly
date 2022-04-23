@@ -1,23 +1,16 @@
-const { makeid, move, cleanupUponDisconnect } = require("../../utils")
-const rooms = require("../../states")
+const {
+    makeid,
+	removeFromAll,
+	getRoom,
+	getRoomAndIndex,
+	getRandomQuestion,
+	cleanupUponDisconnect,
+	move
+} = require("../utils")
+const rooms = require("../../store")
 const questions = require("../../resources/questions")
 
-function getRoom(id) {
-    return rooms.find(r => r.players.find(p => p._id === id))
-}
 
-function getRoomAndIndex(id) {
-    let room = rooms.find(r => r.players.find(p => p._id === id))
-
-    if (!room) return [null, null]
-
-    let player_idx = room.players.findIndex(p => p._id === id)
-    return [room, player_idx]
-}
-
-function getRandomQuestion() {
-    return questions[Math.floor(Math.random() * questions.length)]
-}
 
 module.exports = (socket, client) => {
 
