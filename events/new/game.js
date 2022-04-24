@@ -8,17 +8,28 @@ const questions = require("../../resources/questions")
 module.exports = (socket, client) => {
 
     // Checked
-    client.on('game:playerReady', () => {
+    client.on('game:set', ({event}) => {
         let room = getRoom(client.id)
 
-        room.players.forEach((player) => {
-            if (player._id === client.id) {
-                player.state = 'ready'
-            }
-        })
+        if (!room) {
+            console.log(room + ' not found')
+        }
 
-        room.disableGame = !(room.players.every(p => p.state === 'ready'))
-        console.log(room)
-        socket.in(room.code).emit('game:update', room)
+        switch (event) {
+            case 'GAME_PLAYER_READY':
+                room.players.forEach((player) => {
+                    if (player._id === client.id) {
+                        player.state = 'ready'
+                    }
+                })
+        
+                room.disableGame = !(room.players.every(p => p.state === 'ready'))
+                console.log(room)
+                socket.in(room.code).emit('game:update', {
+                    event: 'GAME_PLAYER_READY', room
+                })
+
+        }
+
     })
 }
