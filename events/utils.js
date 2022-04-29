@@ -1,5 +1,6 @@
 const rooms = require("../store")
 const questions = require("../resources/questions")
+const events = require("../resources/events")
 
 module.exports = {
 	makeid,
@@ -8,7 +9,12 @@ module.exports = {
 	getRoomAndIndex,
 	getRandomQuestion,
 	cleanupUponDisconnect,
+	getEventAt,
 	move
+}
+
+function getEventAt(position) {
+	return events.find(e => e.tile === position)
 }
 
 function getRoom(id) {
