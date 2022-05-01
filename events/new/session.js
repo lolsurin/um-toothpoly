@@ -96,7 +96,7 @@ module.exports = (socket, client) => {
             // player.name
             // player.number = 0,
             player.state = 'tutorial',
-            player.position = 1,
+            player.position = 0,
             player.is_winner = false
             player.podium = 0
             player.motion = {

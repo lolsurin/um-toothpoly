@@ -33,7 +33,7 @@ module.exports = (socket, client) => {
                 })
         
                 room.disableGame = !(room.players.every(p => p.state === 'ready'))
-                console.log(room)
+                // console.log(room)
                 socket.in(room.code).emit('game:update', {
                     event: 'GAME_PLAYER_READY', room
                 })
@@ -76,10 +76,9 @@ module.exports = (socket, client) => {
             case 'GAME_MOVE_COMPLETED':
                 console.log('GAME_MOVE_COMPLETED from ' + client.id + ' to ' + room.players[playerIdx].position)
                 // landed on question?
-                
-                let question = true
+                let landedOnEvent = getEventAt(room.players[playerIdx].position)
 
-                if (question) {
+                if (landedOnEvent) {
                     // emit question event
                     socket.in(room.code).emit('game:update', {
                         event: 'GAME_QUESTION',
@@ -120,39 +119,99 @@ module.exports = (socket, client) => {
                 break
             case 'GAME_QUESTION_ANSWERED':
                 console.log('GAME_QUESTION_ANSWERED')
-                // let event = getEventAt(room.players[playerIdx].position)
-                let event = { "tile": 14, "event": "chance", "to": room.players[playerIdx].position + 10 }
-                // if (
-                //     payload && event.event === 'challenge' ||
-                //     !payload && event.event === 'chance') {
+                let tileEvent = getEventAt(room.players[playerIdx].position)
+                let isChallenge = tileEvent.event === 'challenge'
+                let isChance = tileEvent.event === 'chance'
+                let correct = payload
 
-                payload = true
+                // console.log(tileEvent)
+                // console.log('challenge: ' + isChallenge, 'chance: ' + isChance, 'correct: ' + correct)
 
-                if (payload) {
-
-                        room.players[playerIdx].motion = move(room.players[playerIdx].position, event.to, true)
-                        room.players[playerIdx].position = event.to
+                if (isChallenge) {
+                    if (correct) {
+                        // move up
+                        console.log('moving up')
+                        room.players[playerIdx].motion = move(room.players[playerIdx].position, tileEvent.to, true)
+                        room.players[playerIdx].position = tileEvent.to
 
                         console.log('   GAME_QUESTION_ANSWERED_CORRECT')
                         socket.in(room.code).emit('game:update', {
                             event: 'GAME_QUESTION_ANSWERED_CORRECT',
+                            move: true,
                             playerNumber: playerIdx,
                             player: room.players[playerIdx],
                         })
                     } else {
+                        // stay
                         console.log('   GAME_QUESTION_ANSWERED_INCORRECT')
                         socket.in(room.code).emit('game:update', {
                             event: 'GAME_QUESTION_ANSWERED_INCORRECT'
                         })
                     }
+                } else if (isChance) {
+                    if (correct) {
+                        // stay
+                        console.log('   GAME_QUESTION_ANSWERED_CORRECT')
+                        socket.in(room.code).emit('game:update', {
+                            event: 'GAME_QUESTION_ANSWERED_CORRECT',
+                            move: false
+                        })
+                    } else {
+                        // move down
+                        room.players[playerIdx].motion = move(room.players[playerIdx].position, tileEvent.to, true)
+                        room.players[playerIdx].position = tileEvent.to
+                        console.log('   GAME_QUESTION_ANSWERED_INCORRECT')
+                        socket.in(room.code).emit('game:update', {
+                            event: 'GAME_QUESTION_ANSWERED_INCORRECT',
+                            move: true,
+                            playerNumber: playerIdx,
+                            player: room.players[playerIdx],
+                        })
+                    }
+                } else {
+                    if (correct) {
+                        // stay
+                        console.log('   GAME_QUESTION_ANSWERED_CORRECT')
+                        socket.in(room.code).emit('game:update', {
+                            event: 'GAME_QUESTION_ANSWERED_CORRECT',
+                            move: false
+                        })
+                    } else {
+                        // stay
+                        console.log('   GAME_QUESTION_ANSWERED_INCORRECT')
+                        socket.in(room.code).emit('game:update', {
+                            event: 'GAME_QUESTION_ANSWERED_INCORRECT'
+                        })
+                    }
+                }
                 break
             case 'GAME_QUESTION_UNANSWERED':
                 console.log('GAME_QUESTION_UNANSWERED')
 
-                socket.in(room.code).emit('game:update', {
-                    event: 'GAME_QUESTION_UNANSWERED',
-                    turn: room.turn
-                })
+                let unansweredTileEvent = getEventAt(room.players[playerIdx].position)
+                let unansweredIsChance = unansweredTileEvent.event === 'chance'
+
+                if (unansweredIsChance) {
+                    room.players[playerIdx].motion = move(room.players[playerIdx].position, unansweredTileEvent.to, true)
+                    room.players[playerIdx].position = unansweredTileEvent.to
+                    console.log('   GAME_QUESTION_UNANSWERED')
+                    socket.in(room.code).emit('game:update', {
+                        event: 'GAME_QUESTION_UNANSWERED',
+                        move: true,
+                        playerNumber: playerIdx,
+                        player: room.players[playerIdx],
+                    })
+                } else {
+                    console.log('   GAME_QUESTION_UNANSWERED')
+                    socket.in(room.code).emit('game:update', {
+                        event: 'GAME_QUESTION_UNANSWERED'
+                    })
+                }
+
+                // socket.in(room.code).emit('game:update', {
+                //     event: 'GAME_QUESTION_UNANSWERED',
+                //     turn: room.turn
+                // })
                 break
             default:
                 break

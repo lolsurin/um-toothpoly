@@ -117,7 +117,11 @@ function move(from, to, direct) {
 		bottomMotionArray.push(toY)
 	} else {
 		for (let i = from; i <= to; i++) {
-			if (i > 100) {
+			if (i === 0) {
+				leftMotionArray.push('-5%')
+				bottomMotionArray.push('5%')
+				continue
+			} else if (i > 100) {
 				let [x, y] = getRelPos(200 - i);
 				leftMotionArray.push(x);
 				bottomMotionArray.push(y);
@@ -129,7 +133,7 @@ function move(from, to, direct) {
 		}
 	}
 
-	//console.log(`${direct} ${leftMotionArray}`)
+	// console.log(`${direct} ${leftMotionArray}`)
 
 	return {
 		left: leftMotionArray,
@@ -137,15 +141,15 @@ function move(from, to, direct) {
 	}
 }
   
-	function getRelPos(tile) {
-			tile-=1
-			let ones = tile % 10;
-			let tens = Math.floor(tile / 10);
-		
-			let x_rel = tens % 2 === 0 ? ones + 0.5 : 10 - (ones + 0.5);
-			let y_rel = tens + 0.5;
-		
-			//if (y_rel > 10) y_rel = 9.5
-		
-			return [x_rel * 10 + "%", y_rel * 10 + "%"];
-	}
+function getRelPos(tile) {
+	tile-=1
+	let ones = tile % 10;
+	let tens = Math.floor(tile / 10);
+
+	let x_rel = tens % 2 === 0 ? ones + 0.5 : 10 - (ones + 0.5);
+	let y_rel = tens + 0.5;
+
+	//if (y_rel > 10) y_rel = 9.5
+
+	return [x_rel * 10 + "%", y_rel * 10 + "%"];
+}
