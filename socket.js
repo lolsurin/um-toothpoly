@@ -13,7 +13,7 @@ const gameSocket = (socket) => {
         require('./events/new/validators')(socket, client)
 
         client.on('disconnect', () => {
-            console.log(`disconnected : <${client.id}>`)
+            // console.log(`disconnected : <${client.id}>`)
             cleanupUponDisconnect(client, socket)
         })        
     });

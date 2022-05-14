@@ -33,7 +33,7 @@ module.exports = (socket, client) => {
                 })
         
                 room.disableGame = !(room.players.every(p => p.state === 'ready'))
-                // console.log(room)
+                console.log(room)
                 socket.in(room.code).emit('game:update', {
                     event: 'GAME_PLAYER_READY', room
                 })
@@ -79,10 +79,27 @@ module.exports = (socket, client) => {
                 let landedOnEvent = getEventAt(room.players[playerIdx].position)
 
                 if (landedOnEvent) {
+                    
                     // emit question event
+                    // choose not chosen question
+
+                    if (room.questions.available.length === 0) {
+                        // empty chosen array and refill available array
+                        room.questions.available = room.questions.chosen
+                        room.questions.chosen = []
+                    }
+
+                    let randIndex = Math.floor(Math.random() * room.questions.available.length)
+                    let question = room.questions.available[randIndex]
+                    // add chosen question to chosen array
+                    room.questions.chosen.push(question)
+                    // remove chosen question from available
+                    room.questions.available.splice(randIndex, 1)
+
                     socket.in(room.code).emit('game:update', {
                         event: 'GAME_QUESTION',
-                        question: getRandomQuestion()
+                        // question: getRandomQuestion()
+                        question
                     })
                 } else {
                     // next turn
@@ -104,10 +121,26 @@ module.exports = (socket, client) => {
             // RETHINK THIS
             case 'GAME_NEXT_TURN':
                 console.log('GAME_NEXT_TURN')
+
+                //console.log(room.players)
+
+                const gameOver = room.players.every(player => player.is_winner)
+
+                if (gameOver) {
+                    console.log('GAME_OVER')
+                    socket.in(room.code).emit('game:update', {
+                        event: 'GAME_OVER',
+                        room
+                    })
+                    break
+                }
+
+                process.stdout.write('> ')
                 do {
+                    process.stdout.write('#')
                     room.turn = (room.turn + 1) % room.players.length
                 } while (room.players[room.turn].is_winner || !room.players[room.turn].active)
-
+                process.stdout.write('\n')
                 // room.players.forEach(player => delete player.motion)
 
                 socket.in(room.code).emit('game:enable')

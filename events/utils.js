@@ -67,37 +67,59 @@ function removeFromAll(id) {
 }
 
 function cleanupUponDisconnect(client, socket) {	
-	console.log(`cleanupUponDisconnect from ${client.id}`)
-	let rooms = require('../store')
+	console.log(`DISCONNECTED: ${client.id}`)
+	//let rooms = require('../store')
 	let [room, player_idx] = getRoomAndIndex(client.id)
 	
 	if (!room) {
-		console.log(`cleanupUponDisconnect: no room found for ${client.id}`)
+		console.log(`\tNO ROOM FOUND`)
 		return
 	}
 
+	// setting player to inactive
 	room.players[player_idx].active = false
 
 	// if no active players left
 	if (room.players.length === room.players.filter(p => !p.active).length) {
+		console.log(`\tNO MORE ACTIVE PLAYERS, DELETING ROOM`)
 		let roomIdx = rooms.findIndex(r => r.code !== room.code)
 		rooms.splice(roomIdx, 1)
 	} else { // if there are active players
-
+		console.log(`\tGIVING UP PLAYER SLOT`)
 		// give up slot
 		room.availableSlots.push(room.players[player_idx].slot)
 
 		 // change turn if it was this player's turn
 		if (room.turn === player_idx) {
-			room.scene = 'game'
+			// next turn?
+			// room.scene = 'game'
+			// do {
+			// 	room.turn = (room.turn + 1) % room.players.length
+			// } while (room.players[room.turn].is_winner && room.players[room.turn].active === false)
+			console.log(`\tGIVING TURN TO NEXT PLAYER`)
+			process.stdout.write('> ')
 			do {
+				process.stdout.write('#')
 				room.turn = (room.turn + 1) % room.players.length
-			} while (room.players[room.turn].is_winner && room.players[room.turn].active === false)
+			} while (room.players[room.turn].is_winner || !room.players[room.turn].active)
+			process.stdout.write('\n')
+			// room.players.forEach(player => delete player.motion)
+
+			socket.in(room.code).emit('game:enable')
+			socket.in(room.code).emit('game:update', {
+				event: 'GAME_NEXT_TURN',
+				turn: room.turn
+				//room
+			})
 		}
 
 		if (room.scene = 'lobby') room.players.splice(player_idx, 1)
 
 		socket.in(room.code).emit('game:data:update', room)
+		socket.in(room.code).emit('game:update', {
+			event: 'PLAYER_DISCONNECTED',
+			room
+		})
 	}
 	//console.log(room)
 	

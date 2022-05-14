@@ -1,11 +1,32 @@
 const { 
     makeid,
-	getRoom
+	getRoom,
+    getRoomAndIndex,
+    cleanupUponDisconnect,
 } = require("../utils")
 const rooms = require("../../store")
 const questions = require("../../resources/questions")
 
 module.exports = (socket, client) => {
+
+    client.on('session:set', ({event, payload}) => {
+        let [room, playerIdx] = getRoomAndIndex(client.id)
+
+        if (!room) {
+            console.log(room + ' not found')
+            socket.emit('game:disconnected')
+            return
+        }
+
+        switch(event) {
+            case 'GAME_LEAVE':
+                console.log('GAME_LEAVE')
+                cleanupUponDisconnect(client, socket)
+                break
+            default:
+                break
+        }
+    })
 
     /**
      * Creates a new game in and returns the game code
@@ -90,6 +111,10 @@ module.exports = (socket, client) => {
         room.disableGame = true
         room.scene = 'game'
         room.turn = 0
+        room.questions = {
+            available: questions,
+            chosen: [],
+        }
 
         room.players.forEach((player) => {
             // player._id
