@@ -72,51 +72,75 @@ function cleanupUponDisconnect(client, socket) {
 	let [room, player_idx] = getRoomAndIndex(client.id)
 	
 	if (!room) {
-		console.log(`\tNO ROOM FOUND`)
+		console.log(`\tNO ROOM FOUND FOR THIS CLIENT`)
 		return
+	} else {
+		console.log(`\tPLAYER INDEX: ${player_idx}\tROOM TURN: ${room.turn}`)
+		console.log(`\t${JSON.stringify(room.players)}`)
+		console.log()
 	}
 
 	// setting player to inactive
 	room.players[player_idx].active = false
 
-	// if no active players left
+	
 	if (room.players.length === room.players.filter(p => !p.active).length) {
+		// if no active players left
 		console.log(`\tNO MORE ACTIVE PLAYERS, DELETING ROOM`)
 		let roomIdx = rooms.findIndex(r => r.code !== room.code)
 		rooms.splice(roomIdx, 1)
 	} else if (room.gameOver) {
-		console.log(`\tGAME_OVER`)
+		// if game is already over
+		console.log(`\tGAME_OVER (GAME ALREADY SET TO OVER)`)
 		client.leave(room.code)
 		return
-	} else { // if there are active players
-		console.log(`\tGIVING UP PLAYER SLOT`)
+	} else { 
+		// if there are active players but all other has won
+
+		// check if all other players have won
+		let allOtherPlayersWon = room.players.filter(p => p.active).every(p => p.is_winner)
+
+		console.log('won: ' + JSON.stringify(allOtherPlayersWon))
+
+		if (allOtherPlayersWon) {
+			console.log(`\tGAME_OVER (ALL PLAYERS HAVE WON)`)
+			room.gameOver = true
+			socket.in(room.code).emit('game:update', {
+				event: 'GAME_OVER',
+				room
+			})
+			return
+		} else {
+			// someone hasnt won yet
+
+			if (room.turn === player_idx) {
+				// if it is the players turn
+				console.log(`\tGIVING TURN TO NEXT PLAYER`)
+	
+				process.stdout.write('> Entering loop')
+				console.log(`\t${JSON.stringify(room.players)}`)
+				do {
+					//process.stdout.write('#')
+					room.turn = (room.turn + 1) % room.players.length
+				} while (room.players[room.turn].is_winner || !room.players[room.turn].active)
+				process.stdout.write('> Exiting loop')
+				// room.players.forEach(player => delete player.motion)
+	
+				socket.in(room.code).emit('game:enable')
+				socket.in(room.code).emit('game:update', {
+					event: 'GAME_NEXT_TURN',
+					turn: room.turn
+					//room
+				})
+				
+			}
+
+		}
+		
+
 
 		// give up slot
-		room.availableSlots.push(room.players[player_idx].slot)
-
-		 // change turn if it was this player's turn
-		if (room.turn === player_idx) {
-			// next turn?
-			// room.scene = 'game'
-			// do {
-			// 	room.turn = (room.turn + 1) % room.players.length
-			// } while (room.players[room.turn].is_winner && room.players[room.turn].active === false)
-			console.log(`\tGIVING TURN TO NEXT PLAYER`)
-			process.stdout.write('> ')
-			do {
-				process.stdout.write('#')
-				room.turn = (room.turn + 1) % room.players.length
-			} while (room.players[room.turn].is_winner || !room.players[room.turn].active)
-			process.stdout.write('\n')
-			// room.players.forEach(player => delete player.motion)
-
-			socket.in(room.code).emit('game:enable')
-			socket.in(room.code).emit('game:update', {
-				event: 'GAME_NEXT_TURN',
-				turn: room.turn
-				//room
-			})
-		}
+		room.availableSlots.push(room.players[player_idx].slot)		
 
 		if (room.scene = 'lobby') room.players.splice(player_idx, 1)
 
@@ -126,7 +150,6 @@ function cleanupUponDisconnect(client, socket) {
 			room
 		})
 	}
-	//console.log(room)
 	
 	client.leave(room.code)
 }
