@@ -1,32 +1,27 @@
-const { makeid, move, cleanupUponDisconnect } = require("../../utils")
-const rooms = require("../../states")
+const {
+    makeid,
+	removeFromAll,
+	getRoom,
+	getRoomAndIndex,
+	getRandomQuestion,
+	cleanupUponDisconnect,
+	move
+} = require("../utils")
+const rooms = require("../../store")
 const questions = require("../../resources/questions")
 
-function getRoom(id) {
-    return rooms.find(r => r.players.find(p => p._id === id))
-}
 
-function getRoomAndIndex(id) {
-    let room = rooms.find(r => r.players.find(p => p._id === id))
-
-    if (!room) return [null, null]
-
-    let player_idx = room.players.findIndex(p => p._id === id)
-    return [room, player_idx]
-}
-
-function getRandomQuestion() {
-    return questions[Math.floor(Math.random() * questions.length)]
-}
 
 module.exports = (socket, client) => {
 
+    // Checked
     client.on('game:new', (callback) => {
         let code = makeid(5)
 
         let room = {
             code,
             scene: 'lobby',
+            availableSlots: [0, 1, 2, 3],
             podium: [],
             question: getRandomQuestion(),
             rule: null,
@@ -35,21 +30,27 @@ module.exports = (socket, client) => {
 
         rooms.push(room)
         callback({code})
-
     })
 
+    // Checked
     client.on('game:join', (data, cb) => {
         
         let room = rooms.find(r => r.code === data.code)
         if (room) {
-            
+
+            let slot = Math.floor(Math.random() * room.availableSlots.length) // assign a slot
+
             client.join(room.code)
             room.players.push({
                 _id: client.id,
-                number: room.players.length,
+                slot: room.availableSlots[slot],
+                number: room.players.length ? Math.max(...room.players.map(p => p.number)) + 1 : 0,
+                state: 'waiting',  // everyone starts with waiting state screen
                 active: true,
                 name: data.name,
             })
+
+            room.availableSlots.splice(slot, 1) // remove slot from available slots
 
             cb({
                 ok: true,
@@ -66,7 +67,9 @@ module.exports = (socket, client) => {
         
     })
 
+    // To remove
     client.on('game:data:fetch', (cb) => {
+        
         let room = getRoom(client.id)     
 
         if (room) {
@@ -81,9 +84,17 @@ module.exports = (socket, client) => {
         }
     })
 
+    // Checked
+    client.on('game:fetch', () => {
+        let room = getRoom(client.id)
+        if (room) socket.in(room.code).emit('game:update', room)
+    })
+
+    // Checked
     client.on('game:begin', () => {
         let room = getRoom(client.id)
 
+        room.disableGame = true
         room.scene = 'game'
         room.turn = 0
 
@@ -91,6 +102,7 @@ module.exports = (socket, client) => {
             // player._id
             // player.name
             // player.number = 0,
+            player.state = 'tutorial',
             player.position = 1,
             player.is_winner = false
             player.podium = 0
@@ -100,8 +112,60 @@ module.exports = (socket, client) => {
             }
         })
 
-        socket.in(room.code).emit('game:starting')
+        socket.in(room.code).emit('game:starting', room)
     })
+
+    // Checked
+    client.on('game:playerReady', () => {
+        let room = getRoom(client.id)
+
+        room.players.forEach((player) => {
+            if (player._id === client.id) {
+                player.state = 'ready'
+            }
+        })
+
+        room.disableGame = !(room.players.every(p => p.state === 'ready'))
+        console.log(room)
+        socket.in(room.code).emit('game:update', room)
+    })
+
+    client.on('game:roll', (roll) => {
+        let room = getRoom(client.id)
+
+        if (!room) return
+
+        room.players.forEach((player) => {
+            if (player._id === client.id) {
+                player.state = 'rolling'
+            }
+        })
+
+        socket.in(room.code).emit('game:update', room)
+    })
+
+
+    ////////////////////////////////////////////////////////////
+
+    // Checked
+    // client.on('game:updatePlayerState', (payload) => {
+    //     let room = getRoom(client.id)
+
+    //     console.log("payload -> " + payload)
+
+    //     if (!room) return
+
+    //     room.players.forEach((player) => {
+    //         if (player._id === client.id) {
+    //             player.state = payload
+    //         }
+    //     })
+
+    //     socket.in(room.code).emit('game:data:update', room)
+    // })
+
+    
+
 
     client.on('game:diceRoll', (roll) => {
         console.log(`game:diceRoll from ${client.id} (${roll})`)
@@ -116,6 +180,7 @@ module.exports = (socket, client) => {
         }
 
         room.scene = 'moving'
+        room.disableGame = true
 
         //let dice = Math.floor(Math.random() * 6) + 1
         let dice = roll
@@ -138,7 +203,7 @@ module.exports = (socket, client) => {
                 room.scene = 'end'
             }
         }
-        socket.in(room.code).emit('game:data:update', room)
+        socket.in(room.code).emit('game:update', room)
         
     })
 
@@ -160,7 +225,9 @@ module.exports = (socket, client) => {
     client.on('game:nextTurn', () => {
         console.log(`game:nextTurn from ${client.id}`)
         let [room, player_idx] = getRoomAndIndex(client.id)
+        
         room.scene = 'game'
+        room.disableGame = false
 
         do {
             room.turn = (room.turn + 1) % room.players.length
