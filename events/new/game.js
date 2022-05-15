@@ -33,7 +33,7 @@ module.exports = (socket, client) => {
                 })
         
                 room.disableGame = !(room.players.every(p => p.state === 'ready'))
-                console.log(room)
+                // console.log(room)
                 socket.in(room.code).emit('game:update', {
                     event: 'GAME_PLAYER_READY', room
                 })
@@ -128,6 +128,7 @@ module.exports = (socket, client) => {
 
                 if (gameOver) {
                     console.log('GAME_OVER')
+                    room.gameOver = true
                     socket.in(room.code).emit('game:update', {
                         event: 'GAME_OVER',
                         room

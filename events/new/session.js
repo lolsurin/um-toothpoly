@@ -147,7 +147,7 @@ module.exports = (socket, client) => {
         })
 
         room.disableGame = !(room.players.every(p => p.state === 'ready'))
-        console.log(room)
+        // console.log(room)
         socket.in(room.code).emit('game:update', room)
     })
 }

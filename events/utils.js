@@ -84,8 +84,13 @@ function cleanupUponDisconnect(client, socket) {
 		console.log(`\tNO MORE ACTIVE PLAYERS, DELETING ROOM`)
 		let roomIdx = rooms.findIndex(r => r.code !== room.code)
 		rooms.splice(roomIdx, 1)
+	} else if (room.gameOver) {
+		console.log(`\tGAME_OVER`)
+		client.leave(room.code)
+		return
 	} else { // if there are active players
 		console.log(`\tGIVING UP PLAYER SLOT`)
+
 		// give up slot
 		room.availableSlots.push(room.players[player_idx].slot)
 
