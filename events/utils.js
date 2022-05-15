@@ -75,9 +75,9 @@ function cleanupUponDisconnect(client, socket) {
 		console.log(`\tNO ROOM FOUND FOR THIS CLIENT`)
 		return
 	} else {
-		console.log(`\tPLAYER INDEX: ${player_idx}\tROOM TURN: ${room.turn}`)
-		console.log(`\t${JSON.stringify(room.players)}`)
-		console.log()
+		// console.log(`\tPLAYER INDEX: ${player_idx}\tROOM TURN: ${room.turn}`)
+		// console.log(`\t${JSON.stringify(room.players)}`)
+		// console.log()
 	}
 
 	// setting player to inactive
@@ -100,7 +100,7 @@ function cleanupUponDisconnect(client, socket) {
 		// check if all other players have won
 		let allOtherPlayersWon = room.players.filter(p => p.active).every(p => p.is_winner)
 
-		console.log('won: ' + JSON.stringify(allOtherPlayersWon))
+		//console.log('won: ' + JSON.stringify(allOtherPlayersWon))
 
 		if (allOtherPlayersWon) {
 			console.log(`\tGAME_OVER (ALL PLAYERS HAVE WON)`)
@@ -118,7 +118,7 @@ function cleanupUponDisconnect(client, socket) {
 				console.log(`\tGIVING TURN TO NEXT PLAYER`)
 	
 				process.stdout.write('> Entering loop')
-				console.log(`\t${JSON.stringify(room.players)}`)
+				//console.log(`\t${JSON.stringify(room.players)}`)
 				do {
 					//process.stdout.write('#')
 					room.turn = (room.turn + 1) % room.players.length

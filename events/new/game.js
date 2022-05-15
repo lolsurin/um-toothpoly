@@ -43,6 +43,7 @@ module.exports = (socket, client) => {
                 console.log('GAME_DICE_ROLLED')
 
                 //room.disableGame = true // disable UI until next turn
+                let forceUpdate = false
 
                 let rolled = payload
                 let from = room.players[playerIdx].position
