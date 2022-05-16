@@ -224,7 +224,7 @@ module.exports = (socket, client) => {
                 console.log('GAME_QUESTION_UNANSWERED')
 
                 let unansweredTileEvent = getEventAt(room.players[playerIdx].position)
-                let unansweredIsChance = unansweredTileEvent.event === 'chance'
+                let unansweredIsChance = unansweredTileEvent?.event === 'chance'
 
                 if (unansweredIsChance) {
                     room.players[playerIdx].motion = move(room.players[playerIdx].position, unansweredTileEvent.to, true)
