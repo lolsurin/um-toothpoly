@@ -45,6 +45,23 @@ module.exports = (socket, client) => {
         cleanupUponDisconnect(client, socket)
     })
 
+    client.on('validate:okToEmit', (cb) => {
+        let [room, playerIdx] = getRoomAndIndex(client.id)
+
+        // if it is the players turn
+        if (room.players[room.turn]._id === client.id) {
+            cb({
+                ok: true,
+            })
+        } else {
+            cb({
+                ok: false,
+                error: "It is not your turn"
+            })
+        }
+
+    })
+
     client.on('validate:clientAlreadyInRoom', (cb) => {
         console.log('validate:clientAlreadyInRoom -> ', client.id)
         let room = rooms.find(r => r.players.find(p => p._id === client.id))

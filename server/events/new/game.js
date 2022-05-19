@@ -43,6 +43,7 @@ module.exports = (socket, client) => {
                 console.log('GAME_DICE_ROLLED')
 
                 //room.disableGame = true // disable UI until next turn
+                let forceUpdate = false
 
                 let rolled = payload
                 let from = room.players[playerIdx].position
@@ -223,7 +224,7 @@ module.exports = (socket, client) => {
                 console.log('GAME_QUESTION_UNANSWERED')
 
                 let unansweredTileEvent = getEventAt(room.players[playerIdx].position)
-                let unansweredIsChance = unansweredTileEvent.event === 'chance'
+                let unansweredIsChance = unansweredTileEvent?.event === 'chance'
 
                 if (unansweredIsChance) {
                     room.players[playerIdx].motion = move(room.players[playerIdx].position, unansweredTileEvent.to, true)

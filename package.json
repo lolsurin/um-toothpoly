@@ -1,19 +1,20 @@
 {
   "name": "um-toothpoly",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "description": "",
+  "main": "server/index.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "prod": "NODE_ENV=production node app.js",
-    "heroku-postbuild": "cd client && npm i && npm run build"
+    "build": "cd client && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "express": "latest",
-    "socket.io": "latest"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aqlanhadi/um-toothpoly-server.git"
   },
-  "devDependencies": {
-    "nodemon": "latest"
-  }
+  "author": "Aqlan Nor Azman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aqlanhadi/um-toothpoly-server/issues"
+  },
+  "homepage": "https://github.com/aqlanhadi/um-toothpoly-server#readme"
 }
