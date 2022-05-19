@@ -1,0 +1,19 @@
+[
+    { "tile": 5, "event": "bonus", "reward": "move", "to": 9 },
+    { "tile": 10, "event": "challenge", "reward": "move", "to": 12 },
+    { "tile": 14, "event": "chance", "to": 8 },
+    { "tile": 20, "event": "challenge", "to": 39 },
+    { "tile": 26, "event": "bonus", "to": 29 },
+    { "tile": 30, "event": "challenge", "to": 50 },
+    { "tile": 33, "event": "challenge", "to": 56 },
+    { "tile": 37, "event": "chance", "to": 15 },
+    { "tile": 42, "event": "bonus", "reward": "roll", "to": 45},
+    { "tile": 54, "event": "challenge", "reward": "move", "to": 58 },
+    { "tile": 61, "event": "challenge", "to": 83 },
+    { "tile": 63, "event": "chance", "to": 44 },
+    { "tile": 69, "event": "challenge", "to": 89 },
+    { "tile": 74, "event": "chance", "to": 52 },
+    { "tile": 86, "event": "bonus", "reward": "move", "to": 90 },
+    { "tile": 93, "event": "chance", "to": 87 },
+    { "tile": 97, "event": "chance", "to": 76}
+]
