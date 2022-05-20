@@ -13,7 +13,7 @@ function Layout() {
 				</span>
 			</header>
 
-			<div className='relative flex w-full h-full'>
+			<div className='relative flex w-full h-full flex-1'>
 				<Outlet />
 			</div>
 
