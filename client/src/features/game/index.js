@@ -48,7 +48,7 @@ const Game = () => {
     const gameDisabled = useSelector((state) => state.game.disable)
     const turn = useSelector((state) => state.game.turn)
     // const myTurn = useSelector((state) => state.game.players[state.game.turn]._id === clientPlayer._id)
-    const myTurn = allPlayers[turn]._id === id
+    const myTurn = allPlayers[turn]?._id === id 
     //const myTurn = useSelector(() => turn === clientPlayer?.number)
 
     const socket = useContext(SocketContext)
@@ -318,7 +318,7 @@ const Game = () => {
             <Question question={question} animate={animQuestionControls}/>
             <GameOver animate={animGameOverControls} />
             <div className={`${!allPlayersReady || gameDisabled ? 'pointer-events-none': ''} flex items-stretch flex-1 flex-grow w-full h-full ${!allPlayersReady || !shouldDim ? 'brightness-50' : ''}`}>
-                <div className={`flex justify-center w-full border-4 rounded-3xl bg-white`}>
+                <div className={`flex flex-col md:flex-row justify-center w-full border-4 rounded-3xl bg-white`}>
                     {/* <Side></Side>  */}
                     <div className="flex aspect-square">
                         <Stage />
@@ -352,7 +352,7 @@ const Event = ({animate, prompt}) => (
         initial={{display: 'none'}} 
         className="absolute z-50 flex-col w-3/4 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 bg-white px-4 py-2 border-8 border-black" >
         <div className="p-4">
-            <h1 className="text-center font-black text-9xl font-jakarta">{prompt}</h1>
+            <h1 className="text-center font-black text-6xl font-jakarta">{prompt}</h1>
         </div>
     </motion.div>
 )

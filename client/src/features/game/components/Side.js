@@ -144,7 +144,7 @@ const Side = forwardRef((props, ref) => {
     const sup = ['st', 'nd', 'rd', 'th']
 
     return(
-        <div className="flex flex-col gap-4 ml-4 w-64 p-8">
+        <div className="flex md:flex-col gap-4 ml-4 p-8">
             <div className="flex-1 font-jakarta">
                 <p className="font-bold">Standings</p>
                 <div className="flex flex-col items-center gap-y-4 mt-8">    
@@ -184,51 +184,53 @@ const Side = forwardRef((props, ref) => {
                 </div>
             </div>
 
-            <div className="flex items-center">
-                <div className="flex-1 font-jakarta text-2xl">
-                    { myTurn ? 
-                        <div className="font-bold text-green-700 text-center">
-                            Your turn!
-                        </div>
-                    : 
-                        <div className="text-slate-500 text-center">
-                           {players[turn].name}'s turn
-                        </div>
-                        }
-                </div>
-            </div>
-            
-            <div className="flex m-auto pointer-events-none">
-                
-                <ReactDice
-                    numDice={1}
-                    ref={ref}
-                    faceColor={'#f9f9f9'}
-                    outline={true}
-                    dotColor={'#000'}
-                />
-
-            </div>
-
-            {/* <div className="flex">Disabled ? {String(disableRoll)}</div> */}
-
-            <div 
-                disabled={disableRoll}
-                className={`${disableRoll ? 'cursor-not-allowed' : 'cursor-pointer'} disabled:scale-0 relative flex w-24 h-24 bg-slate-100 border-4 border-black rounded-3xl items-center justify-center m-auto font-kalam font-black text-2xl`}
-                onClick={() => {
-                    if (disableRoll) return
-                    //rollTo(100)
-                    roll()
-                    
-                }}
-                >
-                Roll!
-                {   disableRoll &&
-                    <div className="absolute flex -translate-x-1/2 left-1/2 text-8xl text-red-600">
-                        <p><MdOutlineDoNotDisturbAlt /></p>
+            <div className="flex flex-col scale-75 md:scale-100">
+                <div className="flex items-center">
+                    <div className="flex-1 font-jakarta text-2xl">
+                        { myTurn ? 
+                            <div className="font-bold text-green-700 text-center">
+                                Your turn!
+                            </div>
+                        : 
+                            <div className="text-slate-500 text-center">
+                            {players[turn].name}'s turn
+                            </div>
+                            }
                     </div>
-                }
-            </div>            
+                </div>
+                
+                <div className="flex m-auto pointer-events-none">
+                    
+                    <ReactDice
+                        numDice={1}
+                        ref={ref}
+                        faceColor={'#f9f9f9'}
+                        outline={true}
+                        dotColor={'#000'}
+                    />
+
+                </div>
+
+                {/* <div className="flex">Disabled ? {String(disableRoll)}</div> */}
+
+                <div 
+                    disabled={disableRoll}
+                    className={`${disableRoll ? 'cursor-not-allowed' : 'cursor-pointer'} disabled:scale-0 relative flex w-24 h-24 bg-slate-100 border-4 border-black rounded-3xl items-center justify-center m-auto font-kalam font-black text-2xl`}
+                    onClick={() => {
+                        if (disableRoll) return
+                        //rollTo(100)
+                        roll()
+                        
+                    }}
+                    >
+                    Roll!
+                    {   disableRoll &&
+                        <div className="absolute flex -translate-x-1/2 left-1/2 text-8xl text-red-600">
+                            <p><MdOutlineDoNotDisturbAlt /></p>
+                        </div>
+                    }
+                </div>            
+            </div>
         </div>
     )
 })

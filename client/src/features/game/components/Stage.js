@@ -65,32 +65,8 @@ const Board = () => {
                                     dispatch(gameIsAnimating(true))
                                 }}
                             >
-                                <div className="relative">
-                                    {/* <div className="absolute -translate-x-1/2 translate-y-1/2 -top-[192%] text-6xl text-white left-1/2">
-                                        <FontAwesomeIcon icon={faSortDown} />
-                                    </div> */}
-                                    {/* { whosTurn._id === player._id &&
-                                        <motion.div 
-                                            className={`absolute -top-[200%] left-[0.3rem] text-3xl flex justify-center flex-col items-center`}
-                                            animate={{
-                                                translateY: [0,10,0],
-                                                translateX: [0,0,0],
-                                            }}
-                                            transition={{ ease: "easeInOut", duration: 2, repeat: Infinity }}
-                                            >
-                                            <div className="bg-white rounded-full p-1 text-green-900 w-fit">
-                                                <FaChevronCircleDown />
-                                            </div>
-                                        </motion.div>
-                                    } */}
-
-                                        {/* <div className={`absolute -top-[70%] left-[0.3rem] px-2 rounded-full mb-1 ${ i === myIdx ? 'bg-white' : 'bg-slate-500 text-white' }`}>
-                                            <p className="font-jakarta text-base font-black">{i === myIdx ? 'Me' : player.name}</p>
-                                        </div> */}
-
-                                    {/* <div className={`shift-${player.slot}`}> */}
-                                        <Piece key={i} slot={player.slot} showInGameElements={true} shift={true} />
-                                    {/* </div> */}
+                                <div className="relative scale-50 md:scale-100">
+                                    <Piece key={i} slot={player.slot} showInGameElements={true} shift={true} />
                                 </div>
                             </motion.div>
                     )
