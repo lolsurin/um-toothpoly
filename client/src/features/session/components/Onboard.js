@@ -76,7 +76,7 @@ function Onboard() {
 
     return (
             <Transition>
-                <div className='flex flex-col justify-center w-2/4 h-full gap-8 m-auto text-center divide-y font-jakarta'>
+                <div className='flex flex-col justify-center h-full gap-8 m-auto text-center divide-y font-jakarta'>
 
                     <div className='flex gap-4 flex-col'>
                         <p className="text-lg font-semibold uppercase text-slate-500">Joining room</p>
@@ -87,19 +87,19 @@ function Onboard() {
                     </div>
                 
 
-                    <form className="flex flex-col pt-8 space-y-6" onSubmit={e => handleJoinLobby(e)}>
+                    <form className="flex flex-col pt-8 space-y-6 content-center justify-center" onSubmit={e => handleJoinLobby(e)}>
                         
                         <p className="text-lg font-semibold uppercase text-slate-500">Enter your name</p>
 
-                        <div className="-space-y-px rounded-md">
+                        <div className="-space-y-px m-auto">
                             <div>
                                 <label className="sr-only">Name</label>
-                                <input id="name" name="name" type="name" required autoComplete='off' onChange={e => setName(e.target.value)} value={name} className="relative block w-full px-4 py-6 text-2xl font-semibold text-center text-indigo-900 border rounded-md appearance-none placeholder-slate-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10" placeholder="Player 1" />
+                                <input id="name" name="name" type="name" required autoComplete='off' onChange={e => setName(e.target.value)} value={name} className="relative block px-4 py-6 text-2xl font-semibold text-center text-indigo-900 border rounded-md appearance-none placeholder-slate-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10" placeholder="Player 1" />
                             </div>
                         </div>
 
-                        <div>
-                            <button type="submit" disabled={!name} className="relative flex justify-center w-full px-4 py-4 text-sm font-medium text-white uppercase bg-indigo-600 border border-transparent rounded-lg group disabled:bg-slate-300 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <div className='min-w-sm m-auto'>
+                            <button type="submit" disabled={!name} className="relative flex justify-center w-48 px-4 py-4 text-sm font-medium text-white uppercase bg-indigo-600 border border-transparent rounded-lg group disabled:bg-slate-300 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                                     
                                     { !name && 

@@ -145,7 +145,7 @@ const Side = forwardRef((props, ref) => {
 
     return(
         <div className="flex md:flex-col gap-4 ml-4 p-8">
-            <div className="flex-1 font-jakarta">
+            <div className="flex-1 font-jakarta scale-90 md:scale-100">
                 <p className="font-bold">Standings</p>
                 <div className="flex flex-col items-center gap-y-4 mt-8">    
                 {
