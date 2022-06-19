@@ -1,9 +1,6 @@
 import { useEffect, useState, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { SocketContext } from '../../../context/socket'
-import { motion, useAnimation } from 'framer-motion'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClone, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { sessionSetState } from '../sessionSlice'
 import Transition from '../../Transition'
 import { useDispatch } from 'react-redux'
@@ -17,16 +14,6 @@ function Onboard() {
     const [name, setName] = useState("")
     const [roomError, setRoomError] = useState("")
     const [roomOK, setRoomOK] = useState(true)
-
-    const alertVariants = {
-        hidden: {opacity:0, transition: {delay: .75, duration: 0.25}},
-        visible: {opacity:1, transition: {duration: 0.25}},
-    }
-    const controls = useAnimation()
-    const alertShowHide = async () => {
-        await controls.start('visible')
-        return await controls.start('hidden')
-    }
 
     const handleJoinLobby = (e) => {
 
@@ -53,9 +40,9 @@ function Onboard() {
         // Room OK?
         socket.emit('validate:room', {code: params.code}, callback => {
             if(callback.ok) {
-                // console.log('room validated')
+                // 
             } else {
-                // console.log('room not found')
+                // 
                 navigate('/')
             }
         })
@@ -63,7 +50,7 @@ function Onboard() {
         // User OK?
         socket.emit('validate:clientAlreadyInRoom', (callback) => {
             if (!callback.ok) {
-                console.log(callback.msg)
+                
                 navigate('/')
             }
         })

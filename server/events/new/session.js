@@ -13,14 +13,14 @@ module.exports = (socket, client) => {
         let [room, playerIdx] = getRoomAndIndex(client.id)
 
         if (!room) {
-            console.log(room + ' not found')
+            
             socket.emit('game:disconnected')
             return
         }
 
         switch(event) {
             case 'GAME_LEAVE':
-                console.log('GAME_LEAVE')
+                
                 cleanupUponDisconnect(client, socket)
                 break
             default:
@@ -147,7 +147,7 @@ module.exports = (socket, client) => {
         })
 
         room.disableGame = !(room.players.every(p => p.state === 'ready'))
-        // console.log(room)
+        // 
         socket.in(room.code).emit('game:update', room)
     })
 }

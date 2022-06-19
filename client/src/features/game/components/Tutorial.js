@@ -1,11 +1,7 @@
-import { useDispatch } from "react-redux"
 import { SocketContext } from "../../../context/socket"
 import { useEffect, useContext } from "react"
-import { setReady } from "../gameSlice"
 
 const Tutorial = ({children}) => {
-
-    const dispatch = useDispatch()
     const socket = useContext(SocketContext)
 
     useEffect(() => {
@@ -24,11 +20,11 @@ const Tutorial = ({children}) => {
             </div>
             <div className="flex flex-1 gap-2 justify-evenly">
                 <div className="flex flex-col gap-8 w-1/3">
-                    <img src="/tut1-pic.png" className="bg-slate-500 aspect-square outline-dashed outline-offset-4 outline-white rounded-lg" />
+                    <img src="/tut1-pic.png" className="bg-slate-500 aspect-square outline-dashed outline-offset-4 outline-white rounded-lg" alt="Click on Roll! to move your piece" />
                     <div className="font-jakarta text-white text-center text-xl">Click on Roll! to move your piece</div>
                 </div>
                 <div className="flex flex-col gap-8 w-1/3">
-                    <img src="/tut2-pic.png" className="bg-slate-500 aspect-square outline-dashed outline-offset-4 outline-white rounded-lg" />
+                    <img src="/tut2-pic.png" className="bg-slate-500 aspect-square outline-dashed outline-offset-4 outline-white rounded-lg" alt="Answer the question before the time runs out!" />
                     <div className="font-jakarta text-white text-center text-xl">Answer the question before the time runs out!</div>
                 </div>
             </div>

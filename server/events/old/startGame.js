@@ -2,7 +2,7 @@ const states = require("../states")
 
 module.exports = function(socket, client) {
     client.on('start_game', (data) => {
-        console.log('[:server] starting game...')
+        
 
         let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
         let room = states.rooms[room_idx]       
@@ -17,7 +17,7 @@ module.exports = function(socket, client) {
             is_winner: false,
         }))
 
-        console.log(room)
+        
 
         socket.to(data.roomCode).emit('start_game', { code: data.roomCode })
     })

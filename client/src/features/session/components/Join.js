@@ -1,7 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { SocketContext } from '../../../context/socket'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { sessionSetState } from '../sessionSlice'
 import { useDispatch } from 'react-redux'
 import Transition from '../../Transition'
@@ -19,11 +18,11 @@ const Join = () => {
 	const handleJoinGame = (e) => {
 		// can be simplified, let room checks happen on the onboard page
 		socket.emit('validate:room', { code: roomField.toUpperCase() }, (callback) => {
-			console.log(`looking for room ${roomField}`)
+			
 			if (callback.ok) {
 				navigate(`/${roomField}`)
 			} else {
-				console.log('room not found')
+				
 				setRoomError(callback.error)
 				setRoomFound(false)
 			}
@@ -33,11 +32,11 @@ const Join = () => {
 	}
 
 	useEffect(() => {
-		console.log('rendering Join')
+		
         dispatch(sessionSetState('joining'))
 		socket.emit('validate:clientAlreadyInRoom', (callback) => {
             if (!callback.ok) {
-                console.log(callback.msg)
+                
                 navigate('/')
             }
         })

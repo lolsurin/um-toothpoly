@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 
 import Layout from './features/Layout'
 
 import Lobby from './features/session'
-// import Game from './features/game'
 
 import { SocketContext, socket } from './context/socket'
 import { AnimatePresence } from 'framer-motion'

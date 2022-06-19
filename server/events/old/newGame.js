@@ -3,7 +3,7 @@ const states = require("../states")
 
 module.exports = function(client) {
     client.on('new_game', data => {
-        console.log('[:server] creating new game...')
+        
 
         let playerName = data.playerName
         let roomName = makeid(5) // generate a random room name
@@ -19,8 +19,8 @@ module.exports = function(client) {
 
         states.rooms.push(room)
 
-        console.log('current state:' + JSON.stringify(states.clients))
-        console.log('current rooms:' + JSON.stringify(states.rooms))
+        
+        
 
         client.emit('new_room_code', roomName)        
         client.join(roomName)

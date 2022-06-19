@@ -2,12 +2,12 @@ const states = require("../states")
 
 module.exports = function(socket, client) {
     client.on('join_game', (data, cb) => {
-        console.log('[:server] joining game...')
+        
 
         let playerName = data.playerName
         let roomName = data.roomName
 
-        //console.log(socket.sockets.adapter.rooms)
+        //
         if (!socket.sockets.adapter.rooms.get(roomName)) {
             console.error('room not found')
             cb({
@@ -29,7 +29,7 @@ module.exports = function(socket, client) {
             msg: 'OK',
         })
 
-        //console.log(states.rooms)
+        //
         socket.to(roomName).emit('update_room', states.rooms[idx]) // emit to room that a new player has joined
 
     })

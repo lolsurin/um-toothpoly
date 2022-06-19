@@ -36,7 +36,7 @@ function NewOrJoin() {
 	useEffect(() => {
 		
 		if (!prevState.inLobby) {
-			console.log('removing player from possible room')
+			
 			socket.emit('validate:forceClientCleanState')
 		}
 		

@@ -21,14 +21,14 @@ const Wait = () => {
 
     useEffect(() => {
         dispatch(sessionSetState('waiting'))
-        // console.log('rendering Wait')
+        // 
 
         socket.emit('session:fetch', callback => {
             if (callback.ok) {
-                console.log(callback.room.players)
+                
                 setPlayers(callback.room.players)
             } else {
-                console.log("room not found")
+                
                 navigate('/')
             }
         })

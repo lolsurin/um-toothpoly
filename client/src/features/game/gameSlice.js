@@ -44,12 +44,12 @@ export const gameSlice = createSlice({
 
             // reset movement?
             // state.players.map(p => p.motion = {})
-            // console.log()
+            // 
 
             state.players = game.players
         },
         gameResetPlayerMotion: (state) => {
-            console.log('RESET_PLAYER_MOTION')
+            
 
             let playersCloned = _.cloneDeep(state.players)
 
@@ -57,14 +57,14 @@ export const gameSlice = createSlice({
 
                 let lastBottom = p.motion.bottom[p.motion.bottom.length - 1]
                 let lastLeft = p.motion.left[p.motion.left.length - 1]
-                console.log(lastBottom, lastLeft)
+                
                 p.motion = {
                     bottom: lastBottom,
                     left: lastLeft,
                 }
             })
 
-            //console.log(playersCloned)
+            //
 
             state.players[state.turn] = playersCloned[state.turn]
             
@@ -80,7 +80,7 @@ export const gameSlice = createSlice({
             state.events.rolled = action.payload
         },
         gameSetTurn: (state, action) => {
-            console.log('gameSetTurn -> ' + action.payload)
+            
             state.turn = action.payload
         },
         gameSetTimerId: (state, action) => {

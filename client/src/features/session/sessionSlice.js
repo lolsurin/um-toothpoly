@@ -13,13 +13,13 @@ export const sessionSlice = createSlice({
     initialState,
     reducers: {
         sessionSet: (state, action) => {
-            console.log('%cSESSION', 'color: #00ff00', 'Set', action.payload)
+            
             state.online = action.payload.online
             state.inGame = action.payload.inGame
             state.state = action.payload.state
         },
         sessionId: (state, action) => {
-            console.log('%cSESSION', 'color: #00ff00', 'sessionId', action.payload)
+            
             state.id = action.payload
         },
         sessionSetInGame: (state, action) => {

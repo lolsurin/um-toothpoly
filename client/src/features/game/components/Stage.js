@@ -1,26 +1,16 @@
-import { useState } from "react"
 import { useSelector } from "react-redux"
 import Piece from "./Piece"
 import { motion } from "framer-motion"
-import { FaChevronCircleDown } from "react-icons/fa"
 import { socket } from "../../../context/socket"
 import { useDispatch } from "react-redux"
-import { gameIsAnimating, gameToggleClearMotion, gameResetPlayerMotion } from "../gameSlice"
+import { gameIsAnimating } from "../gameSlice"
 
 const Board = () => {
 
     const dispatch = useDispatch()
-    const players = useSelector((state) => state.game.players)
-
-    const myIdx = useSelector((state) => state.game.players.find((player) => player._id === state.session.id).number)
-    // const me = useSelector((state) => state.game.players?.find((player) => player._id === socket.id))
-    // const turn = useSelector(state => state.game.turn)
-    // const myTurn = turn === me.number      
+    const players = useSelector((state) => state.game.players)   
 
     const myTurn = useSelector((state) => state.game.players[state.game.turn]._id === state.session.id)
-    const whosTurn = useSelector((state) => state.game.players[state.game.turn])
-    const moving = useSelector((state) => state.game.moving)
-    const isSupposedToClearMotion = useSelector((state) => state.game.isSupposedToClearMotion)
 
     const gameDisabled = useSelector((state) => state.game.disable)
 
@@ -47,16 +37,16 @@ const Board = () => {
                                 // transition={{ delay: .75, duration: player.motion.left.length * 0.20 }}
                                 initial={false}
                                 onAnimationComplete={() => {
-                                    console.log(`player ${i} is done moving`)
+                                    
                                     dispatch(gameIsAnimating(false))
                                     if(myTurn && gameDisabled) socket.emit('game:set', { event: 'GAME_MOVE_COMPLETED' })
                                     
                                     // if (isSupposedToClearMotion) {
-                                    //     console.log('clearing motion')
+                                    //     
                                     //     dispatch(gameResetPlayerMotion())
                                     //     dispatch(gameToggleClearMotion())
                                     // } else {
-                                    //     console.log('motion cleared')
+                                    //     
                                     // }
                                 
 

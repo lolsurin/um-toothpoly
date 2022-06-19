@@ -63,7 +63,7 @@ module.exports = (socket, client) => {
     })
 
     client.on('validate:clientAlreadyInRoom', (cb) => {
-        console.log('validate:clientAlreadyInRoom -> ', client.id)
+        
         let room = rooms.find(r => r.players.find(p => p._id === client.id))
         
         if (!room) {

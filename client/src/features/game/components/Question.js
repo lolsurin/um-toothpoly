@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { SocketContext } from "../../../context/socket"
 import { useEffect, useContext } from "react"
-import { motion, useAnimation } from "framer-motion"
+import { motion } from "framer-motion"
 
 import { CountdownCircleTimer } from "react-countdown-circle-timer"
 
@@ -44,11 +44,6 @@ const Question = ({question, animate}) => {
         
     }, [])
 
-    const handleAnswer = () => {
-        socket.emit("game:set", {
-            event: 'GAME_PLAYER_READY'
-        })
-    }
 
     const lang = 'en'
 
@@ -68,7 +63,6 @@ const Question = ({question, animate}) => {
                         duration={21}
                         colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                         colorsTime={[10, 6, 3, 0]}
-                        onComplete={() => {console.log('COUNTDOWN_EXPIRED')}}
                     >
                         {renderTime}
                     </CountdownCircleTimer>
@@ -91,7 +85,7 @@ const Question = ({question, animate}) => {
                                 key={a.value}
                                 className="px-8 py-4 text-2xl md:w-1/4 font-bold bg-white rounded-full font-jakarta hover:scale-110"
                                 onClick={() => {
-                                    // console.log(a.correct)
+                                    // 
                                     socket.emit('game:set', {
                                         event: 'GAME_QUESTION_ANSWERED',
                                         payload: a.correct

@@ -1,7 +1,7 @@
-import { useContext, useEffect, useRef, forwardRef } from "react"
+import { useContext, useEffect, forwardRef } from "react"
 import { SocketContext } from "../../../context/socket"
 import { useDispatch, useSelector } from "react-redux"
-import { motion, useAnimation } from "framer-motion" 
+import { useAnimation } from "framer-motion" 
 import { useMounted } from "../../../context/mounted"
 import { gameSetMoving, gameIsAnimating } from "../gameSlice"
 import ReactDice from 'react-dice-complete'
@@ -19,7 +19,6 @@ const Side = forwardRef((props, ref) => {
     const rolled = useSelector(state => state.game.events.rolled)
     const gameDisabled = useSelector((state) => state.game.disable)
     const isAnimating = useSelector((state) => state.game.isAnimating)
-    const isMoving = useSelector((state) => state.game.moving)
 
     const players = useSelector((state) => state.game.players)
     const turn = useSelector((state) => state.game.turn)
@@ -44,7 +43,7 @@ const Side = forwardRef((props, ref) => {
 
     useEffect(() => {
 
-        // console.log(mounted())
+        // 
         if (!mounted()) return
 
         animDiceControls.start({
@@ -54,20 +53,20 @@ const Side = forwardRef((props, ref) => {
     }, [rolled])
 
     useEffect(() => {
-        console.log(myId)
+        
         ranked?.forEach((player, i) => {
             if (player._id === myId) {
-                console.log('match at ', i)
+                
             }
         })
-        // console.log('rendered hehe')
+        // 
     }, [])
 
     const roll = async () => {
 
         dispatch(gameSetMoving())
         dispatch(gameIsAnimating(true))
-        console.log('clicking player at ' + currentPosition)
+        
 
         let roll = Math.floor(Math.random() * 6) + 1
         let validRoll
@@ -86,7 +85,6 @@ const Side = forwardRef((props, ref) => {
         }
         // send roll to server
 
-        //dice.rollAll([roll])
         socket.emit('game:set', {
             event: 'GAME_DICE_ROLLED',
             payload: roll
@@ -94,52 +92,6 @@ const Side = forwardRef((props, ref) => {
 
 
     }
-
-    const emitEvent = ({roll}) => {
-        socket.emit('game:set', {
-            event: 'GAME_DICE_ROLLED',
-            payload: roll
-        })
-    }
-
-    const rollTo = async (where) => {
-
-        dispatch(gameSetMoving())
-        dispatch(gameIsAnimating(true))
-        // send roll to server
-
-        let roll = where
-        let validRoll
-        if (currentPosition === 97 && roll === 6) {
-            validRoll = [1, 2, 3, 4, 5]
-            roll = validRoll[Math.floor(Math.random() * validRoll.length)]
-        }
-        if (currentPosition === 98 && roll === 4) {
-            validRoll = [1, 2, 3, 5, 6]
-            roll = validRoll[Math.floor(Math.random() * validRoll.length)]
-        }
-        if (currentPosition === 99 && roll === 2) {
-            validRoll = [1, 3, 4, 5, 6]
-            roll = validRoll[Math.floor(Math.random() * validRoll.length)]
-            roll = 3
-        }
-
-        console.log('clicking player at ' + currentPosition)
-        animDiceControls.start({
-            rotate: [0, 360,0, 360,0, 360,0, 360,0, 360,0, 360],
-        }).then(() => {
-            socket.emit('game:set', {
-                event: 'GAME_DICE_ROLLED',
-                payload: roll
-            })
-        })
-
-    }
-
-    // const rollDoneCallback = (num) => {
-    //     console.log('roll done callback', num)
-    //     //dispatch(gameSetMoving())
-    // }
 
     const sup = ['st', 'nd', 'rd', 'th']
 

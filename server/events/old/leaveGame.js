@@ -2,7 +2,7 @@ const states = require("../states")
 
 module.exports = function(socket, client) {
     client.on('game:leave', () => {
-        console.log(`deleting sumn..`)
+        
         client.leave(states.clients[client.id])
 
         delete states.clients[client.id]
