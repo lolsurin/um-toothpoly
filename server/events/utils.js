@@ -53,7 +53,7 @@ function removeFromAll(id) {
 
 	if (room.length === 0) return
 
-	console.log(room)
+	
 
 	room.forEach((room, idx) => {
 		let player_idx = room.players.findIndex(player => player.id == id)
@@ -67,17 +67,17 @@ function removeFromAll(id) {
 }
 
 function cleanupUponDisconnect(client, socket) {	
-	console.log(`DISCONNECTED: ${client.id}`)
+	
 	//let rooms = require('../store')
 	let [room, player_idx] = getRoomAndIndex(client.id)
 	
 	if (!room) {
-		console.log(`\tNO ROOM FOUND FOR THIS CLIENT`)
+		
 		return
 	} else {
-		// console.log(`\tPLAYER INDEX: ${player_idx}\tROOM TURN: ${room.turn}`)
-		// console.log(`\t${JSON.stringify(room.players)}`)
-		// console.log()
+		// 
+		// 
+		// 
 	}
 
 	// setting player to inactive
@@ -86,12 +86,12 @@ function cleanupUponDisconnect(client, socket) {
 	
 	if (room.players.length === room.players.filter(p => !p.active).length) {
 		// if no active players left
-		console.log(`\tNO MORE ACTIVE PLAYERS, DELETING ROOM`)
+		
 		let roomIdx = rooms.findIndex(r => r.code !== room.code)
 		rooms.splice(roomIdx, 1)
 	} else if (room.gameOver) {
 		// if game is already over
-		console.log(`\tGAME_OVER (GAME ALREADY SET TO OVER)`)
+		
 		client.leave(room.code)
 		return
 	} else { 
@@ -100,10 +100,10 @@ function cleanupUponDisconnect(client, socket) {
 		// check if all other players have won
 		let allOtherPlayersWon = room.players.filter(p => p.active).every(p => p.is_winner)
 
-		//console.log('won: ' + JSON.stringify(allOtherPlayersWon))
+		//
 
 		if (allOtherPlayersWon) {
-			console.log(`\tGAME_OVER (ALL PLAYERS HAVE WON)`)
+			
 			room.gameOver = true
 			socket.in(room.code).emit('game:update', {
 				event: 'GAME_OVER',
@@ -115,10 +115,10 @@ function cleanupUponDisconnect(client, socket) {
 
 			if (room.turn === player_idx) {
 				// if it is the players turn
-				console.log(`\tGIVING TURN TO NEXT PLAYER`)
+				
 	
 				process.stdout.write('> Entering loop')
-				//console.log(`\t${JSON.stringify(room.players)}`)
+				//
 				do {
 					//process.stdout.write('#')
 					room.turn = (room.turn + 1) % room.players.length
@@ -183,7 +183,7 @@ function move(from, to, direct) {
 		}
 	}
 
-	// console.log(`${direct} ${leftMotionArray}`)
+	// 
 
 	return {
 		left: leftMotionArray,

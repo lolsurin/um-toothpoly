@@ -18,14 +18,14 @@ module.exports = (socket, client) => {
         let [room, playerIdx] = getRoomAndIndex(client.id)
 
         if (!room) {
-            console.log(room + ' not found')
+            
             socket.emit('game:disconnected')
             return
         }
         
         switch (event) {
             case 'GAME_PLAYER_READY':
-                console.log('GAME_PLAYER_READY')
+                
                 room.players.forEach((player) => {
                     if (player._id === client.id) {
                         player.state = 'ready'
@@ -33,14 +33,14 @@ module.exports = (socket, client) => {
                 })
         
                 room.disableGame = !(room.players.every(p => p.state === 'ready'))
-                // console.log(room)
+                // 
                 socket.in(room.code).emit('game:update', {
                     event: 'GAME_PLAYER_READY', room
                 })
                 break
 
             case 'GAME_DICE_ROLLED':
-                console.log('GAME_DICE_ROLLED')
+                
 
                 //room.disableGame = true // disable UI until next turn
                 let forceUpdate = false
@@ -75,7 +75,7 @@ module.exports = (socket, client) => {
                 })
                 break
             case 'GAME_MOVE_COMPLETED':
-                console.log('GAME_MOVE_COMPLETED from ' + client.id + ' to ' + room.players[playerIdx].position)
+                
                 // landed on question?
                 let landedOnEvent = getEventAt(room.players[playerIdx].position)
 
@@ -121,14 +121,14 @@ module.exports = (socket, client) => {
                 break
             // RETHINK THIS
             case 'GAME_NEXT_TURN':
-                console.log('GAME_NEXT_TURN')
+                
 
-                //console.log(room.players)
+                //
 
                 const gameOver = room.players.every(player => player.is_winner)
 
                 if (gameOver) {
-                    console.log('GAME_OVER')
+                    
                     room.gameOver = true
                     socket.in(room.code).emit('game:update', {
                         event: 'GAME_OVER',
@@ -153,23 +153,23 @@ module.exports = (socket, client) => {
                 })
                 break
             case 'GAME_QUESTION_ANSWERED':
-                console.log('GAME_QUESTION_ANSWERED')
+                
                 let tileEvent = getEventAt(room.players[playerIdx].position)
                 let isChallenge = tileEvent.event === 'challenge'
                 let isChance = tileEvent.event === 'chance'
                 let correct = payload
 
-                // console.log(tileEvent)
-                // console.log('challenge: ' + isChallenge, 'chance: ' + isChance, 'correct: ' + correct)
+                // 
+                // 
 
                 if (isChallenge) {
                     if (correct) {
                         // move up
-                        console.log('moving up')
+                        
                         room.players[playerIdx].motion = move(room.players[playerIdx].position, tileEvent.to, true)
                         room.players[playerIdx].position = tileEvent.to
 
-                        console.log('   GAME_QUESTION_ANSWERED_CORRECT')
+                        
                         socket.in(room.code).emit('game:update', {
                             event: 'GAME_QUESTION_ANSWERED_CORRECT',
                             move: true,
@@ -178,7 +178,7 @@ module.exports = (socket, client) => {
                         })
                     } else {
                         // stay
-                        console.log('   GAME_QUESTION_ANSWERED_INCORRECT')
+                        
                         socket.in(room.code).emit('game:update', {
                             event: 'GAME_QUESTION_ANSWERED_INCORRECT'
                         })
@@ -186,7 +186,7 @@ module.exports = (socket, client) => {
                 } else if (isChance) {
                     if (correct) {
                         // stay
-                        console.log('   GAME_QUESTION_ANSWERED_CORRECT')
+                        
                         socket.in(room.code).emit('game:update', {
                             event: 'GAME_QUESTION_ANSWERED_CORRECT',
                             move: false
@@ -195,7 +195,7 @@ module.exports = (socket, client) => {
                         // move down
                         room.players[playerIdx].motion = move(room.players[playerIdx].position, tileEvent.to, true)
                         room.players[playerIdx].position = tileEvent.to
-                        console.log('   GAME_QUESTION_ANSWERED_INCORRECT')
+                        
                         socket.in(room.code).emit('game:update', {
                             event: 'GAME_QUESTION_ANSWERED_INCORRECT',
                             move: true,
@@ -206,14 +206,14 @@ module.exports = (socket, client) => {
                 } else {
                     if (correct) {
                         // stay
-                        console.log('   GAME_QUESTION_ANSWERED_CORRECT')
+                        
                         socket.in(room.code).emit('game:update', {
                             event: 'GAME_QUESTION_ANSWERED_CORRECT',
                             move: false
                         })
                     } else {
                         // stay
-                        console.log('   GAME_QUESTION_ANSWERED_INCORRECT')
+                        
                         socket.in(room.code).emit('game:update', {
                             event: 'GAME_QUESTION_ANSWERED_INCORRECT'
                         })
@@ -221,7 +221,7 @@ module.exports = (socket, client) => {
                 }
                 break
             case 'GAME_QUESTION_UNANSWERED':
-                console.log('GAME_QUESTION_UNANSWERED')
+                
 
                 let unansweredTileEvent = getEventAt(room.players[playerIdx].position)
                 let unansweredIsChance = unansweredTileEvent?.event === 'chance'
@@ -229,7 +229,7 @@ module.exports = (socket, client) => {
                 if (unansweredIsChance) {
                     room.players[playerIdx].motion = move(room.players[playerIdx].position, unansweredTileEvent.to, true)
                     room.players[playerIdx].position = unansweredTileEvent.to
-                    console.log('   GAME_QUESTION_UNANSWERED')
+                    
                     socket.in(room.code).emit('game:update', {
                         event: 'GAME_QUESTION_UNANSWERED',
                         move: true,
@@ -237,7 +237,7 @@ module.exports = (socket, client) => {
                         player: room.players[playerIdx],
                     })
                 } else {
-                    console.log('   GAME_QUESTION_UNANSWERED')
+                    
                     socket.in(room.code).emit('game:update', {
                         event: 'GAME_QUESTION_UNANSWERED'
                     })

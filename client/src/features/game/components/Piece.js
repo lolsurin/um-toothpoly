@@ -1,4 +1,4 @@
-import { faCat, faCrow, faSpider, faFish, faClone  } from '@fortawesome/free-solid-svg-icons'
+import { faCat, faCrow, faSpider, faFish  } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useSelector } from 'react-redux'
 import { motion } from 'framer-motion'

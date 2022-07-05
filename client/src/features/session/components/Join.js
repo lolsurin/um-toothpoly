@@ -1,7 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { SocketContext } from '../../../context/socket'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { sessionSetState } from '../sessionSlice'
 import { useDispatch } from 'react-redux'
 import Transition from '../../Transition'
@@ -19,11 +18,11 @@ const Join = () => {
 	const handleJoinGame = (e) => {
 		// can be simplified, let room checks happen on the onboard page
 		socket.emit('validate:room', { code: roomField.toUpperCase() }, (callback) => {
-			console.log(`looking for room ${roomField}`)
+			
 			if (callback.ok) {
 				navigate(`/${roomField}`)
 			} else {
-				console.log('room not found')
+				
 				setRoomError(callback.error)
 				setRoomFound(false)
 			}
@@ -33,18 +32,18 @@ const Join = () => {
 	}
 
 	useEffect(() => {
-		console.log('rendering Join')
+		
         dispatch(sessionSetState('joining'))
 		socket.emit('validate:clientAlreadyInRoom', (callback) => {
             if (!callback.ok) {
-                console.log(callback.msg)
+                
                 navigate('/')
             }
         })
 	}, [])
 
     const props = {
-        className: 'm-auto',
+        className: '',
         inputStyle: {
           fontFamily: 'sans-serif',
           margin:  '.25rem',
@@ -76,7 +75,7 @@ const Join = () => {
       }
 
 	return (
-		<div className='w-1/2 m-auto'>
+		<div className='min-w-min m-auto'>
             <Transition>
 
                 
@@ -87,34 +86,18 @@ const Join = () => {
                     <div className='text-2xl font-semibold text-center text-slate-500 m-auto'>
                         Have a room code? Enter below
                     </div>
-                    {/* <input type="hidden" name="roomField" /> */}
-                    {/* <div className='-space-y-px border rounded-md'>
-                        <div>
-                            <label className='sr-only'>Room Code</label>
-                            <input
-                                id='roomCode'
-                                name='roomCode'
-                                type='roomCode'
-                                autoComplete='off'
-                                required
-                                onChange={(e) => {
-                                    setRoomField(e.target.value.toUpperCase())
-                                    setRoomFound(true)
-                                }}
-                                value={roomField}
-                                className='relative block w-full px-4 py-6 text-center text-gray-900 uppercase rounded-lg appearance-none placeholder-slate-400'
-                                placeholder='ROOM CODE'
+
+                    <div className=''>
+                    
+                        <ReactCodeInput type='text' fields={5} {...props} 
+                            onChange={(e) => {
+                                //e.preventDefault()
+                                setRoomFound(true)
+                                setRoomField(e.toUpperCase())
+                            }}
+                            isValid={roomFound}
                             />
-                        </div>
-                    </div> */}
-                    <ReactCodeInput type='text' fields={5} {...props} 
-                        onChange={(e) => {
-                            //e.preventDefault()
-                            setRoomFound(true)
-                            setRoomField(e.toUpperCase())
-                        }}
-                        isValid={roomFound}
-                        />
+                    </div>
                     
 
                     <div>

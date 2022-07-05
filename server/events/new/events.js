@@ -126,7 +126,7 @@ module.exports = (socket, client) => {
         })
 
         room.disableGame = !(room.players.every(p => p.state === 'ready'))
-        console.log(room)
+        
         socket.in(room.code).emit('game:update', room)
     })
 
@@ -151,7 +151,7 @@ module.exports = (socket, client) => {
     // client.on('game:updatePlayerState', (payload) => {
     //     let room = getRoom(client.id)
 
-    //     console.log("payload -> " + payload)
+    //     
 
     //     if (!room) return
 
@@ -168,13 +168,13 @@ module.exports = (socket, client) => {
 
 
     client.on('game:diceRoll', (roll) => {
-        console.log(`game:diceRoll from ${client.id} (${roll})`)
+        
 
         // to check if connected
         let [room, player_idx] = getRoomAndIndex(client.id)
 
         if (!room) {
-            console.log(`${client.id} is not in a room`)
+            
             socket.emit('game:disconnected')
             return
         }
@@ -187,7 +187,7 @@ module.exports = (socket, client) => {
 
         let from = room.players[player_idx].position
         room.players[player_idx].position += dice // move player
-        //console.log(`moving from ${from} to ${room.players[player_idx].position}`)
+        //
         room.players[player_idx].motion = move(from, room.players[player_idx].position, false)
 
         //room.turn = (room.turn + 1) % room.players.length
@@ -209,7 +209,7 @@ module.exports = (socket, client) => {
 
     ///////////////////MOVE TO 14///////
     client.on('game:dev:14', () => {
-        console.log(`game:dev:14 from ${client.id}`)
+        
         let [room, player_idx] = getRoomAndIndex(client.id)
 
         room.scene = 'moving'
@@ -223,7 +223,7 @@ module.exports = (socket, client) => {
     })
 
     client.on('game:nextTurn', () => {
-        console.log(`game:nextTurn from ${client.id}`)
+        
         let [room, player_idx] = getRoomAndIndex(client.id)
         
         room.scene = 'game'
@@ -237,7 +237,7 @@ module.exports = (socket, client) => {
     })
 
     client.on('game:event', rule => {
-        console.log(`game:event from ${client.id}`)
+        
         let [room, player_idx] = getRoomAndIndex(client.id) // get room and player index
         
         room.scene = 'event' // set scene to event
@@ -248,7 +248,7 @@ module.exports = (socket, client) => {
     })
 
     client.on('game:submitAnswer', (correct, callback) => {
-        console.log(`game:submitAnswer from ${client.id}`)
+        
         let [room, player_idx] = getRoomAndIndex(client.id) // get room and player index
 
         if (correct && room.rule.event === 'challenge' || !correct && room.rule.event === 'chance') {
@@ -265,7 +265,7 @@ module.exports = (socket, client) => {
     })
 
     client.on('game:leave_', () => {
-        console.log(`game:leave from ${client.id}`)
+        
 
         // let [room, player_idx] = getRoomAndIndex(client.id)
         

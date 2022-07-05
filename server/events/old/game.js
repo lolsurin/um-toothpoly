@@ -4,7 +4,7 @@ const questions = require("../resources/questions")
 module.exports = function(socket, client) {
 
     client.on('game:start', (data) => {
-        console.log('[:server] starting game...')
+        
 
         let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
         let room = states.rooms[room_idx]       
@@ -51,7 +51,7 @@ module.exports = function(socket, client) {
     })
 
     client.on(`game:update_player_position`, (data) => {
-        console.log(`updating player position to ${data.position}`)
+        
         let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
         let room = states.rooms[room_idx]
 
@@ -78,7 +78,7 @@ module.exports = function(socket, client) {
     client.on('game:incorrect', data => a(data, false))
 
     function q(data) {
-        console.log(data.rule)
+        
         let room_idx = states.rooms.findIndex(room => room.players.find(player => player.id == client.id)) // find room index
         let room = states.rooms[room_idx]
 

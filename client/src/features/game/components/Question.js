@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { SocketContext } from "../../../context/socket"
 import { useEffect, useContext } from "react"
-import { motion, useAnimation } from "framer-motion"
+import { motion } from "framer-motion"
 
 import { CountdownCircleTimer } from "react-countdown-circle-timer"
 
@@ -15,6 +15,25 @@ const renderTime = ({remainingTime}) => (
 
 const Question = ({question, animate}) => {
 
+    // question = {
+    //     "image_path": null,
+    //     "en": {
+    //         "question": "Toothpaste should be placed in large quantities on the entire surface of the toothbrush to ensure its effectiveness.",
+    //         "answers": [
+    //             { "value": "True", "correct": false },
+    //             { "value": "False", "correct": true }
+    //         ]        
+    //     },
+    //     "my": {
+    //         "question": "Ubat gigi perlu diletakkan dengan banyak di keseluruhan permukaan berus gigi untuk memastikan keberkesanannya.",
+    //         "answers": [
+    //             { "value": "Betul", "correct": false },
+    //             { "value": "Salah", "correct": true }
+    //         ]
+            
+    //     }
+    // }
+
     const timerId = useSelector((state) => state.game.timerId)
     const inQuestion = useSelector((state) => state.game.inQuestion)
     const myTurn = useSelector((state) => state.game.players[state.game.turn]._id === state.session.id)
@@ -25,20 +44,15 @@ const Question = ({question, animate}) => {
         
     }, [])
 
-    const handleAnswer = () => {
-        socket.emit("game:set", {
-            event: 'GAME_PLAYER_READY'
-        })
-    }
 
     const lang = 'en'
 
     return (
         <>          
-            <motion.div initial={{top: '-50%', display: 'none'}} animate={animate} className={`${myTurn ? 'border-green-500' : `border-red-500`} absolute z-50 flex-col w-4/6 p-8 -translate-x-1/2 -translate-y-1/2 border-8 shadow-2xl h-4/6 bg-slate-900 left-1/2`}>
+            <motion.div initial={{top: '-50%', display: 'none'}} animate={animate} className={`${myTurn ? 'border-green-500' : `border-red-500`} absolute z-50 flex-col w-4/6 p-4 -translate-x-1/2 -translate-y-1/2 border-8 shadow-2xl bg-slate-900 left-1/2 gap-6`}>
                 
 
-                <div className="flex mb-2">
+                <div className="flex flex-col md:flex-row mb-2 items-center gap-2">
 
                     <CountdownCircleTimer
                         key={inQuestion}
@@ -49,43 +63,29 @@ const Question = ({question, animate}) => {
                         duration={21}
                         colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                         colorsTime={[10, 6, 3, 0]}
-                        onComplete={() => {console.log('COUNTDOWN_EXPIRED')}}
                     >
                         {renderTime}
                     </CountdownCircleTimer>
-                    <div className="flex-1 text-3xl font-black text-center text-white font-brandy shadow-white uppercase">Question for { myTurn ? 'you' : whosTurn.name}</div>
+                    <div className="flex-1 text-xl font-black text-center text-white font-jakarta shadow-white uppercase">Question for { myTurn ? 'you' : whosTurn.name}</div>
                 </div>
 
                 <div className="flex flex-col items-center justify-center flex-1 gap-2 p-3 ">
 
-                    {/* <img className="mb-4 rounded shadow-lg h-44" src="/question-assets/dental-jaw-blue-overlay-1200x628-iStock-1145063557.jpg" alt="Dental Jaw"/> */}
-
                     <div className="text-2xl font-semibold tracking-wide text-center text-white font-jakarta">
                         { question[lang]?.question }
-                        {/* { myTurn ? <p>My turn!</p> : <p>Not my turn!</p>} */}
                     </div>
                 </div>
 
                 {
                     myTurn && 
-                    <div className="flex flex-row flex-wrap items-center justify-center flex-1 gap-7">
+                    <div className="flex flex-row flex-wrap items-center justify-center flex-1 gap-4">
                         {
                             question[lang]?.answers?.map((a, i) => <button 
-                                // key={i} 
-                                // disabled={!moving} 
-                                // className={`flex justify-center p-4 font-medium rounded w-48 
-                                //     ${moving ? `bg-gray-200 hover:bg-gray-300`:`bg-slate-900 `}
-                                //     ${answered ? a.correct ? `bg-green-400` : `bg-red-400` : ``}`}
-                                // onClick={async () => {
-                                //     setAnswered(true)
-                                //     //await buttonControls.start({ scale: [1, 1.1, 1], transition: { duration: 0.7} })
-                                //     //submitAnswerAction(a.correct)
-                                //     setAnswered(false)
-                                // }}
+
                                 key={a.value}
-                                className="w-48 h-20 px-8 py-4 text-2xl font-bold bg-white rounded-2xl font-jakarta hover:scale-110"
+                                className="px-8 py-4 text-2xl md:w-1/4 font-bold bg-white rounded-full font-jakarta hover:scale-110"
                                 onClick={() => {
-                                    // console.log(a.correct)
+                                    // 
                                     socket.emit('game:set', {
                                         event: 'GAME_QUESTION_ANSWERED',
                                         payload: a.correct
