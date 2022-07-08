@@ -18,7 +18,7 @@ const Tutorial = ({children}) => {
             <div className="p-4">
                 <h1 className="text-white text-center text-4xl font-jakarta">How to play</h1>
             </div>
-            <div className="flex flex-1 gap-2 justify-evenly">
+            <div className="flex flex-1 gap-8 justify-evenly">
                 <div className="flex flex-col gap-8 w-1/3">
                     <img src="/tut1-pic.png" className="bg-slate-500 aspect-square outline-dashed outline-offset-4 outline-white rounded-lg" alt="Click on Roll! to move your piece" />
                     <div className="font-jakarta text-white text-center text-xl">Click on Roll! to move your piece</div>
@@ -26,6 +26,14 @@ const Tutorial = ({children}) => {
                 <div className="flex flex-col gap-8 w-1/3">
                     <img src="/tut2-pic.png" className="bg-slate-500 aspect-square outline-dashed outline-offset-4 outline-white rounded-lg" alt="Answer the question before the time runs out!" />
                     <div className="font-jakarta text-white text-center text-xl">Answer the question before the time runs out!</div>
+                </div>
+                <div className="flex flex-col gap-8 w-1/3">
+                    <img src="/tut3-pic.png" className="bg-slate-500 aspect-square outline-dashed outline-offset-4 outline-white rounded-lg" alt="Answer the question before the time runs out!" />
+                    <div className="font-jakarta text-white text-center text-xl">Answer correctly on Springboard and Toothbrush Turbo to climb up!</div>
+                </div>
+                <div className="flex flex-col gap-8 w-1/3">
+                    <img src="/tut4-pic.png" className="bg-slate-500 aspect-square outline-dashed outline-offset-4 outline-white rounded-lg" alt="Answer the question before the time runs out!" />
+                    <div className="font-jakarta text-white text-center text-xl">If you answer incorrectly on Lollipops you'll fall down!</div>
                 </div>
             </div>
             <div className="bg-green-700 w-fit m-auto px-12 py-4 mt-6 rounded-xl text-2xl font-bold text-white font-jakarta cursor-pointer hover:scale-110" onClick={handleCompletedTutorial}>

@@ -7,8 +7,6 @@ import { gameSetGame } from '../../game/gameSlice';
 import { useDispatch } from 'react-redux';
 
 import Transition from '../../Transition';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClone  } from '@fortawesome/free-solid-svg-icons'
 import Piece from '../../game/components/Piece';
 
 const Wait = () => {
@@ -64,7 +62,11 @@ const Wait = () => {
                         <p className="text-6xl font-bold uppercase">{ params.code }</p>
                     </div> 
 
-                    <div className='text-2xl font-jakarta'>Start the game or wait for others to join!</div>
+                    <div className={`text-2xl font-jakarta ${players.length > 3 ? 'text-red-600' : 'text-green-600'}`}>
+                        {
+                            players.length > 3 ? 'Room is full. Start the game!' : 'Start the game or wait for others to join!'
+                        }
+                    </div>
 
                     <div className='font-jakarta'>Players</div>
 
@@ -81,7 +83,7 @@ const Wait = () => {
                     </div>
 
                     <div>
-                        <button type="submit" disabled={players.find(Boolean)?._id !== socket.id} onClick={handleStart} className="relative flex justify-center w-full px-8 py-4 text-sm font-medium text-white uppercase bg-indigo-600 border border-transparent rounded-lg group disabled:bg-slate-300 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <button type="submit" disabled={players.find(Boolean)?._id !== socket.id} onClick={handleStart} className="relative flex justify-center w-full px-8 py-4 text-sm font-medium text-white uppercase bg-indigo-600 animate-pulse hover:animate-none disabled:animate-none border border-transparent rounded-lg group disabled:bg-slate-300 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                         </span>
                         {players.find(Boolean)?._id === socket.id ? `Start Game` : `Waiting for ${players.find(Boolean)?.name} to start...`}

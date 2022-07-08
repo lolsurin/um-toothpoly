@@ -312,7 +312,7 @@ const Game = () => {
             <Question question={question} animate={animQuestionControls}/>
             <GameOver animate={animGameOverControls} />
             <div className={`${!allPlayersReady || gameDisabled ? 'pointer-events-none': ''} flex items-stretch flex-1 flex-grow w-full h-full ${!allPlayersReady || !shouldDim ? 'brightness-50' : ''}`}>
-                <div className={`flex flex-col md:flex-row justify-center w-full border-4 rounded-3xl bg-white`}>
+                <div className={`flex flex-col md:flex-row justify-center w-full rounded-3xl bg-white`}>
                     {/* <Side></Side>  */}
                     <div className="flex aspect-square">
                         <Stage />
