@@ -15,6 +15,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the project
-      run: cd client && npm run build
     - name: Build the Docker image
       run: docker build server --file server/Dockerfile --tag um-toothpoly:$(date +%s)
