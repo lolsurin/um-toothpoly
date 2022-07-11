@@ -9,7 +9,6 @@ const gameSocket = (socket) => {
 
         require('./events/new/session')(socket, client);
         require('./events/new/game')(socket, client);
-        // require('./events/new/events')(socket, client)
         require('./events/new/validators')(socket, client)
 
         client.on('disconnect', () => {
