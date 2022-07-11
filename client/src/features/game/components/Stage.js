@@ -13,6 +13,7 @@ const Board = () => {
     const myTurn = useSelector((state) => state.game.players[state.game.turn]._id === state.session.id)
 
     const gameDisabled = useSelector((state) => state.game.disable)
+    const me = useSelector((state) => state.game.players.find((player) => player._id === state.game.myId) )
 
     return(
         <div className="relative flex-1 p-5 board">
@@ -39,7 +40,7 @@ const Board = () => {
                                 onAnimationComplete={() => {
                                     
                                     dispatch(gameIsAnimating(false))
-                                    if(myTurn && gameDisabled) socket.emit('game:set', { event: 'GAME_MOVE_COMPLETED' })
+                                    if(myTurn && i === me.number && gameDisabled) socket.emit('game:set', { event: 'GAME_MOVE_COMPLETED' })
                                     
                                     // if (isSupposedToClearMotion) {
                                     //     
