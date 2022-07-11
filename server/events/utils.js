@@ -71,13 +71,21 @@ function cleanupUponDisconnect(client, socket) {
 	//let rooms = require('../store')
 	let [room, player_idx] = getRoomAndIndex(client.id)
 	
-	if (!room) {
+	// if waiting
+
+	if (!room) return
+
+	if (room.players[player_idx].state === 'waiting') {
+		// remove player from lobby, and update to store
+		room.players.splice(player_idx, 1)
+		client.leave(room.code)
 		
+		socket.in(room.code).emit('session:update', {
+			event: 'SESSION_UPDATE_ROSTER',
+			room
+		})
+
 		return
-	} else {
-		// 
-		// 
-		// 
 	}
 
 	// setting player to inactive
