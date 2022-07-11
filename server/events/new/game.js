@@ -38,7 +38,6 @@ module.exports = (socket, client) => {
                     event: 'GAME_PLAYER_READY', room
                 })
                 break
-
             case 'GAME_DICE_ROLLED':
                 
 
