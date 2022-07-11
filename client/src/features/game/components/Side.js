@@ -121,10 +121,14 @@ const Side = forwardRef((props, ref) => {
                                     }
                                     {
                                         player._id !== myId &&
-                                        <div className="text-slate-500">
-                                            {player.name}
+                                        <div className="text-slate-500 flex items-center">
+                                            <span>{player.name}</span>
+                                            {
+                                                !player.active && <span className="text-xs">&nbsp;(disconnected)</span>
+                                            }
                                         </div>
                                     }
+                                    
                                 </div>
 
                                 {/* <div className="text-sm font-bold">{player.name}</div>
