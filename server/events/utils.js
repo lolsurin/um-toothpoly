@@ -75,11 +75,19 @@ function cleanupUponDisconnect(client, socket) {
 
 	if (!room) return
 
+	// leave room when in waiting state (undo session:join )
 	if (room.players[player_idx].state === 'waiting') {
 		// remove player from lobby, and update to store
+
+		let slot = room.players[player_idx].slot
 		room.players.splice(player_idx, 1)
+
+		console.log(`${slot} returned`)
+
+		room.availableSlots.push(slot) // return slot
+
 		client.leave(room.code)
-		
+
 		socket.in(room.code).emit('session:update', {
 			event: 'SESSION_UPDATE_ROSTER',
 			room

@@ -69,7 +69,8 @@ module.exports = (socket, client) => {
                 active: true,
                 name: data.name,
             })
-
+            
+            
             room.availableSlots.splice(slot, 1) // remove slot from available slots
 
             cb({
