@@ -17,7 +17,7 @@ const GameOver = ({animate}) => {
 
     return (
         <>          
-            <motion.div initial={{top: '-50%', display: 'none'}} animate={animate} className={`absolute z-50 flex-col w-3/4 py-8 -translate-x-1/2 -translate-y-1/2 border-8 shadow-2xl h-4/6 bg-slate-900 left-1/2`}>
+            <motion.div initial={{top: '-50%', display: 'none'}} animate={animate} className={`absolute z-50 flex-col w-3/4 py-8 md:px-10 -translate-x-1/2 -translate-y-1/2 border-8 shadow-2xl h-4/6 bg-slate-900 left-1/2`}>
                 <div className="flex mb-2 m-auto text-white font-jakarta text-3xl md:text-5xl">
                 🎉 Game Over! 🎉
                 </div>

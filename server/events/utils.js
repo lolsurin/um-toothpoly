@@ -70,7 +70,7 @@ function cleanupUponDisconnect(client, socket) {
 	//let rooms = require('../store')
 	let [room, player_idx] = getRoomAndIndex(client.id)
 	console.log('entry')
-	console.log(room.players)
+	console.log(room?.players)
 	
 	// if waiting
 	if (!room) return
@@ -154,8 +154,6 @@ function cleanupUponDisconnect(client, socket) {
 
 		}
 		
-
-
 		// give up slot
 		room.availableSlots.push(room.players[player_idx].slot)
 

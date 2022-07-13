@@ -16,7 +16,7 @@ const Piece = ({slot, showInGameElements = false, shift = false}) => {
     let icons = [faCat, faCrow, faSpider, faFish]
 
     return (
-            <div className={`flex flex-col relative ${ showInGameElements && `shift-${slot}`} ${!player.active && 'grayscale'} }`}>
+            <div className={`flex flex-col relative ${ showInGameElements && `shift-${slot} ${!player.active && 'grayscale'}`}}`}>
                 {
                     showInGameElements &&
                     <>
