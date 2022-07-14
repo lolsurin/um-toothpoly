@@ -56,7 +56,7 @@ const Board = () => {
                                     dispatch(gameIsAnimating(true))
                                 }}
                             >
-                                <div className="relative scale-50 md:scale-100">
+                                <div className={`relative scale-50 md:scale-100 ${!player.active && 'grayscale'}`}>
                                     <Piece key={i} slot={player.slot} showInGameElements={true} shift={true} />
                                 </div>
                             </motion.div>

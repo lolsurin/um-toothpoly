@@ -109,7 +109,7 @@ const Side = forwardRef((props, ref) => {
                                     {i+1}<sup>{sup[i]}</sup>
                                 </div>
 
-                                <div className={`${i === 0 && 'scale-125'} px-4`}>
+                                <div className={`${i === 0 && 'scale-125'} px-4 ${!player.active && 'grayscale'}`}>
                                     <Piece slot={player.slot} key={player._id}/>
                                 </div>
 
