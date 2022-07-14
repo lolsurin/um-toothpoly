@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,6 +6,8 @@ import { SocketContext } from '../../../context/socket'
 import Transition from '../../Transition'
 import { sessionSetState, sessionGetState, sessionReset, sessionId } from '../sessionSlice'
 import { gameReset } from '../../game/gameSlice' 
+
+import HowToPlay from '../../HowToPlay'
 
 /**
  * @description Lobby component
@@ -21,6 +23,7 @@ function NewOrJoin() {
 
 	const prevState = useSelector(sessionGetState)
 	const socket = useContext(SocketContext)
+	const [showHowToPlay, setShowHowToPlay] = useState(false)
 
 	/**
 	 * Emits a request to create a new room
@@ -58,6 +61,10 @@ function NewOrJoin() {
 		tap: { scale: 0.95 }
 	}
 
+	const howToPlayToggle = () => {
+		setShowHowToPlay(false)
+	}
+
 	return (
 		<Transition>
 			<div className='flex flex-col items-center justify-center h-full gap-6'>
@@ -88,7 +95,13 @@ function NewOrJoin() {
 					</button>
 				</motion.div>
 
-				<div className='text-center text-slate-500'>How To Play</div>
+				<div className='text-center text-slate-500 hover:scale-110 cursor-pointer' onClick={() => {
+					setShowHowToPlay(true)
+					console.log(showHowToPlay)
+				}}
+				>How To Play</div>
+
+				<HowToPlay visible={showHowToPlay} doneText={'Close'} closeHandler={howToPlayToggle} />
 			</div>
 
 		</Transition>

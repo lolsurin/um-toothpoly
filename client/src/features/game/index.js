@@ -291,19 +291,33 @@ const Game = () => {
 
     }, [myTurn])
 
+    const beforeUnloadListener = (event) => {
+        event.preventDefault();
+        return event.returnValue = "Are you sure you want to exit?";
+     };
+
     useEffect(() => {
-        const unloadCallback = (event) => {
-          event.preventDefault();
-          event.returnValue = "";
-          return "";
-        };
-      
-        window.addEventListener("beforeunload", unloadCallback);
-        return () => window.removeEventListener("beforeunload", unloadCallback);
+        window.addEventListener("beforeunload", beforeUnloadListener, {capture: true})
     }, []);
 
     return (
         <Transition>
+
+            <div 
+                className='fixed right-8 md:right-14 top-10 bg-red-500 hover:scale-110 text-white px-5 py-2 rounded-md font-jakarta'
+                onClick={() => {
+                    let text = 'Are you sure you want to leave? All your progress will be lost!'
+                    if (window.confirm(text) === true) {
+                        socket.emit('session:set', {
+                            event: 'GAME_LEAVE'
+                        })
+                        navigate('/')
+                    }
+                }}
+                >
+                Leave
+            </div>
+
             { !allPlayersReady && <WaitForPlayers />}
             { clientPlayer.state === 'tutorial' && <Tutorial />}
             
@@ -312,7 +326,7 @@ const Game = () => {
             <Question question={question} animate={animQuestionControls}/>
             <GameOver animate={animGameOverControls} />
             <div className={`${!allPlayersReady || gameDisabled ? 'pointer-events-none': ''} flex items-stretch flex-1 flex-grow w-full h-full ${!allPlayersReady || !shouldDim ? 'brightness-50' : ''}`}>
-                <div className={`flex flex-col md:flex-row justify-center w-full border-4 rounded-3xl bg-white`}>
+                <div className={`flex flex-col md:flex-row justify-center w-full rounded-3xl bg-white`}>
                     {/* <Side></Side>  */}
                     <div className="flex aspect-square">
                         <Stage />

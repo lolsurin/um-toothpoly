@@ -47,6 +47,9 @@ module.exports = (socket, client) => {
 
     client.on('validate:okToEmit', (cb) => {
         let [room, playerIdx] = getRoomAndIndex(client.id)
+        let player = room.players[room.turn]
+
+        console.log(`${player.number} requesting to move. CT: ${room.turn}`)
 
         // if it is the players turn
         if (room.players[room.turn]._id === client.id) {

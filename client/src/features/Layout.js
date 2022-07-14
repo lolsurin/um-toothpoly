@@ -7,7 +7,7 @@ function Layout() {
 	return (
 		<div className='flex flex-col w-screen h-full min-h-screen gap-2 p-4 m-auto max-w-screen-2xl place-content-between min-w-fit'>
 			<header className='relative flex items-center h-max justify-around'>
-				<img src='/toothpoly.png' alt='Um Toothpoly' className='h-20 mt-4' />
+				<img src='/toothpoly.png' alt='Um Toothpoly' className='h-10 md:h-16 mt-4' />
 				{/* <span className='invisible ml-4 text-xs font-bold text-gray-700 sm:visible sm:text-xl' onClick={() => navigate('/')}>
 					TOOTHPOLY 🦷
 				</span> */}

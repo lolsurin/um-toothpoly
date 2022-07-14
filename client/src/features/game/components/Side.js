@@ -109,7 +109,7 @@ const Side = forwardRef((props, ref) => {
                                     {i+1}<sup>{sup[i]}</sup>
                                 </div>
 
-                                <div className={`${i === 0 && 'scale-125'} px-4`}>
+                                <div className={`${i === 0 && 'scale-125'} px-4 ${!player.active && 'grayscale'}`}>
                                     <Piece slot={player.slot} key={player._id}/>
                                 </div>
 
@@ -121,10 +121,14 @@ const Side = forwardRef((props, ref) => {
                                     }
                                     {
                                         player._id !== myId &&
-                                        <div className="text-slate-500">
-                                            {player.name}
+                                        <div className="text-slate-500 flex items-center">
+                                            <span>{player.name}</span>
+                                            {
+                                                !player.active && <span className="text-xs">&nbsp;(disconnected)</span>
+                                            }
                                         </div>
                                     }
+                                    
                                 </div>
 
                                 {/* <div className="text-sm font-bold">{player.name}</div>
@@ -165,9 +169,10 @@ const Side = forwardRef((props, ref) => {
 
                 {/* <div className="flex">Disabled ? {String(disableRoll)}</div> */}
 
+                
                 <div 
                     disabled={disableRoll}
-                    className={`${disableRoll ? 'cursor-not-allowed' : 'cursor-pointer'} disabled:scale-0 relative flex w-24 h-24 bg-slate-100 border-4 border-black rounded-3xl items-center justify-center m-auto font-kalam font-black text-2xl`}
+                    className={`${disableRoll ? 'cursor-not-allowed' : 'cursor-pointer'} disabled:scale-0 flex w-24 h-24 border-4 border-black rounded-3xl items-center justify-center m-auto font-kalam font-black text-2xl`}
                     onClick={() => {
                         if (disableRoll) return
                         //rollTo(100)
@@ -175,13 +180,19 @@ const Side = forwardRef((props, ref) => {
                         
                     }}
                     >
-                    Roll!
+                    <div className={`${disableRoll ? '' : 'animate-pulse bg-green-400'} disabled:scale-0 flex absolute w-24 h-24 border-4  border-black rounded-3xl items-center justify-center m-auto font-kalam font-black text-2xl`} />
+                    <div className="z-20">
+
+                        Roll!   
+                    </div>
                     {   disableRoll &&
                         <div className="absolute flex -translate-x-1/2 left-1/2 text-8xl text-red-600">
                             <p><MdOutlineDoNotDisturbAlt /></p>
                         </div>
                     }
-                </div>            
+                </div>
+
+
             </div>
         </div>
     )

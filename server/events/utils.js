@@ -67,31 +67,49 @@ function removeFromAll(id) {
 }
 
 function cleanupUponDisconnect(client, socket) {	
-	
 	//let rooms = require('../store')
 	let [room, player_idx] = getRoomAndIndex(client.id)
+	console.log('entry')
+	console.log(room?.players)
 	
-	if (!room) {
-		
+	// if waiting
+	if (!room) return
+
+	// leave room when in waiting state (undo session:join )
+	if (room.players[player_idx].state === 'waiting') {
+		// remove player from lobby, and update to store
+		console.log('room in waiting state')
+		let slot = room.players[player_idx].slot
+		room.players.splice(player_idx, 1)
+
+		console.log(`${slot} returned`)
+
+		room.availableSlots.push(slot) // return slot
+
+		client.leave(room.code)
+
+		socket.in(room.code).emit('session:update', {
+			event: 'SESSION_UPDATE_ROSTER',
+			room
+		})
+
 		return
-	} else {
-		// 
-		// 
-		// 
 	}
 
 	// setting player to inactive
 	room.players[player_idx].active = false
+	console.log('mid')
+	console.log(room.players)
 
 	
 	if (room.players.length === room.players.filter(p => !p.active).length) {
 		// if no active players left
-		
+		console.log('no active players left')
 		let roomIdx = rooms.findIndex(r => r.code !== room.code)
 		rooms.splice(roomIdx, 1)
 	} else if (room.gameOver) {
 		// if game is already over
-		
+		console.log('game already over')
 		client.leave(room.code)
 		return
 	} else { 
@@ -116,7 +134,6 @@ function cleanupUponDisconnect(client, socket) {
 			if (room.turn === player_idx) {
 				// if it is the players turn
 				
-	
 				process.stdout.write('> Entering loop')
 				//
 				do {
@@ -137,12 +154,8 @@ function cleanupUponDisconnect(client, socket) {
 
 		}
 		
-
-
 		// give up slot
-		room.availableSlots.push(room.players[player_idx].slot)		
-
-		if (room.scene = 'lobby') room.players.splice(player_idx, 1)
+		room.availableSlots.push(room.players[player_idx].slot)
 
 		socket.in(room.code).emit('game:data:update', room)
 		socket.in(room.code).emit('game:update', {
@@ -152,6 +165,7 @@ function cleanupUponDisconnect(client, socket) {
 	}
 	
 	client.leave(room.code)
+	console.log(room.players)
 }
 
 function move(from, to, direct) {

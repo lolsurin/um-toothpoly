@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux"
 import { SocketContext } from "../../../context/socket"
-import { useEffect, useContext } from "react"
+import { useEffect, useContext, useState } from "react"
 import { motion } from "framer-motion"
 
 import { CountdownCircleTimer } from "react-countdown-circle-timer"
@@ -40,16 +40,21 @@ const Question = ({question, animate}) => {
     const whosTurn = useSelector((state) => state.game.players[state.game.turn])
     const socket = useContext(SocketContext)
 
-    useEffect(() => {
-        
-    }, [])
-
+    const [answered, setAnswered] = useState(false)
+    const [answer, setAnswer] = useState(null)
 
     const lang = 'en'
 
     return (
         <>          
-            <motion.div initial={{top: '-50%', display: 'none'}} animate={animate} className={`${myTurn ? 'border-green-500' : `border-red-500`} absolute z-50 flex-col w-4/6 p-4 -translate-x-1/2 -translate-y-1/2 border-8 shadow-2xl bg-slate-900 left-1/2 gap-6`}>
+            <motion.div 
+                initial={{top: '-50%', display: 'none'}} 
+                animate={animate} 
+                className={`${myTurn ? 'border-green-500' : `border-red-500`} absolute z-50 flex-col w-4/6 py-8 px-4 -translate-x-1/2 -translate-y-1/2 border-8 shadow-2xl bg-slate-900 left-1/2 gap-6`}
+                onAnimationComplete={() => {
+                    if(answered) setAnswered(false)
+                }}
+                >
                 
 
                 <div className="flex flex-col md:flex-row mb-2 items-center gap-2">
@@ -66,7 +71,7 @@ const Question = ({question, animate}) => {
                     >
                         {renderTime}
                     </CountdownCircleTimer>
-                    <div className="flex-1 text-xl font-black text-center text-white font-jakarta shadow-white uppercase">Question for { myTurn ? 'you' : whosTurn.name}</div>
+                    <div className="flex-1 text-xl font-black text-center text-white font-jakarta shadow-white uppercase">{ myTurn ? 'Question for you' : whosTurn.name + ' is answering'}</div>
                 </div>
 
                 <div className="flex flex-col items-center justify-center flex-1 gap-2 p-3 ">
@@ -76,29 +81,35 @@ const Question = ({question, animate}) => {
                     </div>
                 </div>
 
-                {
-                    myTurn && 
+                {/* {
+                    myTurn &&  */}
                     <div className="flex flex-row flex-wrap items-center justify-center flex-1 gap-4">
                         {
                             question[lang]?.answers?.map((a, i) => <button 
 
                                 key={a.value}
-                                className="px-8 py-4 text-2xl md:w-1/4 font-bold bg-white rounded-full font-jakarta hover:scale-110"
+                                disabled={!myTurn}
+                                className={`px-8 py-4 text-2xl md:w-1/4 font-bold rounded-full font-jakarta bg-white ${myTurn ? answered ? i === answer ?  `scale-110 ${a.correct? 'bg-green-400' : 'bg-red-400'}` : `opacity-60 ${a.correct? 'bg-green-400' : 'bg-red-400'}` : 'hover:scale-110' : a.correct ? 'bg-green-400' : 'bg-gray-400 text-gray-200'}`}
                                 onClick={() => {
-                                    // 
-                                    socket.emit('game:set', {
-                                        event: 'GAME_QUESTION_ANSWERED',
-                                        payload: a.correct
-                                    })
-                                    clearTimeout(timerId)
+                                    
+                                    if (myTurn) {
+                                        socket.emit('game:set', {
+                                            event: 'GAME_QUESTION_ANSWERED',
+                                            payload: a.correct
+                                        })
+                                        clearTimeout(timerId)
+                                        setAnswered(true)
+                                        setAnswer(i)
+                                    }
+
                                 }}
                                 >
                                     { a.value } 
                                 </button>)
                         }
                     </div>
-                }
-                {
+                {/* // } */}
+                {/* {
                     !myTurn &&
                         <div className="flex flex-row flex-wrap items-center justify-center flex-1 gap-5">
                             <svg role="status" className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -107,7 +118,7 @@ const Question = ({question, animate}) => {
                             </svg>
                             <p className="text-slate-400 font-jakarta text-2xl">waiting for {whosTurn.name} to answer...</p>
                         </div>
-                }
+                } */}
 
                 
             </motion.div>            
