@@ -23,7 +23,7 @@ function Layout() {
 				&copy; {new Date().getFullYear()}&nbsp;Universiti Malaya 
 				</div>
 				<div className='m-auto text-center'>
-				This online game was developed by a group of researcher from Universiti Malaya and the project was funded by the Protoype Research Grant Scheme (PR002-2019B), Ministry of Higher Education, Malaysia.
+				This online game was developed by a group of researchers from Universiti Malaya and the project was funded by the Protoype Research Grant Scheme (PR002-2019B), Ministry of Higher Education, Malaysia.
 				</div>
 			</footer>
 		</div>
