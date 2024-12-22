@@ -4,7 +4,7 @@
   "description": "",
   "main": "server/index.js",
   "scripts": {
-    "build": "cd client && npm run build",
+    "build": "cross-env BUILD_PATH=../server/build react-scripts build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cd server && npm run dev",
     "debug": "nodemon --inspect app.js"
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/aqlanhadi/um-toothpoly-server/issues"
   },
-  "homepage": "https://github.com/aqlanhadi/um-toothpoly-server#readme"
+  "homepage": "https://github.com/aqlanhadi/um-toothpoly-server#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
 }
