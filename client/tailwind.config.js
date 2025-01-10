@@ -21,6 +21,7 @@ module.exports = {
         brandy: ['Brandy', 'cursive'],
         jakarta: ['Plus Jakarta Sans', 'sans-serif'],
         kalam: ['Kalam', 'cursive'],
+        jua: ['Jua', 'sans-serif']
       },
       colors: {
         'primary-color': '#FF3A6C', 
