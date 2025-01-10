@@ -76,7 +76,7 @@ function NewOrJoin() {
 					<button
 						type='submit'
 						onClick={(e) => handleNewGame(e)}
-						className='h-24 px-4 py-2 text-2xl font-bold font-jua text-white uppercase bg-primary-color rounded-lg w-96 hover:bg-primary-color-700'
+						className='h-24 px-4 py-2 text-2xl font-bold text-white uppercase bg-primary-color rounded-lg w-96 hover:bg-primary-color-800 font-jua'
 					>
 						🦷 Start New Game
 					</button>
