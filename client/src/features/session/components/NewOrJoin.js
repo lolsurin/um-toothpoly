@@ -18,95 +18,108 @@ import HowToPlay from '../../HowToPlay'
  */
 
 function NewOrJoin() {
-	const dispatch = useDispatch()
-	const navigate = useNavigate()
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
-	const prevState = useSelector(sessionGetState)
-	const socket = useContext(SocketContext)
-	const [showHowToPlay, setShowHowToPlay] = useState(false)
+	const prevState = useSelector(sessionGetState);
+	const socket = useContext(SocketContext);
+	const [showHowToPlay, setShowHowToPlay] = useState(false);
+	const [buttonStyle, setButtonStyle] = useState({
+		height: '6rem',
+		fontSize: '1.5rem',
+		width: '24rem',
+	});
 
-	/**
-	 * Emits a request to create a new room
-	 * @param {event} e 
-	 */
+	// Responsive button style
+	useEffect(() => {
+		const updateButtonStyle = () => {
+			if (window.innerWidth < 640) {
+				setButtonStyle({ height: '4rem', fontSize: '1rem', width: '18rem' });
+			} else if (window.innerWidth < 1024) {
+				setButtonStyle({ height: '5rem', fontSize: '1.25rem', width: '20rem' });
+			} else {
+				setButtonStyle({ height: '6rem', fontSize: '1.5rem', width: '24rem' });
+			}
+		};
+
+		window.addEventListener('resize', updateButtonStyle);
+		updateButtonStyle(); // Initial call
+		return () => window.removeEventListener('resize', updateButtonStyle);
+	}, []);
+
 	const handleNewGame = (e) => {
 		socket.emit('session:new', (callback) => {
-			navigate(`${callback.code}`) // go to room onboarding
-		})
-		e.preventDefault()
-	}
+			navigate(`${callback.code}`); // go to room onboarding
+		});
+		e.preventDefault();
+	};
 
 	useEffect(() => {
-		
 		if (!prevState.inLobby) {
-			
-			socket.emit('validate:forceClientCleanState')
+			socket.emit('validate:forceClientCleanState');
 		}
-		
-		dispatch(sessionReset())
-		dispatch(gameReset())
-		dispatch(sessionId(socket.id)) // reassign?
-		dispatch(sessionSetState('lobby'))
-		// maybe need to check from state if client is already in room?
-
-		
-
-	}, [])
+		dispatch(sessionReset());
+		dispatch(gameReset());
+		dispatch(sessionId(socket.id)); // reassign?
+		dispatch(sessionSetState('lobby'));
+	}, []);
 
 	const animation = {
 		hover: {
 			scale: 1.05,
 			transition: { duration: 0.2 },
 		},
-		tap: { scale: 0.95 }
-	}
+		tap: { scale: 0.95 },
+	};
 
 	const howToPlayToggle = () => {
-		setShowHowToPlay(false)
-	}
+		setShowHowToPlay(false);
+	};
 
 	return (
 		<Transition>
-			<div className='flex flex-col items-center justify-center h-full gap-6'>
-
+			<div className="flex flex-col items-center justify-center h-full gap-6">
 				<motion.div
 					whileHover={animation.hover}
 					whileTap={animation.tap}
 				>
 					<button
-						type='submit'
+						type="submit"
 						onClick={(e) => handleNewGame(e)}
-						className='h-24 px-4 py-2 text-2xl font-bold text-white uppercase bg-indigo-600 rounded-lg w-96 hover:bg-indigo-700'
+						style={buttonStyle}
+						className="font-bold text-white uppercase bg-indigo-600 rounded-lg hover:bg-indigo-700"
 					>
 						🦷 Start New Game
 					</button>
 				</motion.div>
-			
+
 				<motion.div
 					whileHover={animation.hover}
 					whileTap={animation.tap}
 				>
 					<button
-						type='submit'
+						type="submit"
 						onClick={(e) => navigate('/join')}
-						className='h-24 px-4 py-2 text-2xl font-bold text-white uppercase rounded-lg w-96 bg-slate-600 hover:bg-slate-700'
+						style={buttonStyle}
+						className="font-bold text-white uppercase rounded-lg bg-slate-600 hover:bg-slate-700"
 					>
 						Join Game From Code
 					</button>
 				</motion.div>
 
-				<div className='text-center text-slate-500 hover:scale-110 cursor-pointer' onClick={() => {
-					setShowHowToPlay(true)
-					console.log(showHowToPlay)
-				}}
-				>How To Play</div>
+				<div
+					className="text-center text-slate-500 hover:scale-110 cursor-pointer"
+					onClick={() => {
+						setShowHowToPlay(true);
+					}}
+				>
+					How To Play
+				</div>
 
 				<HowToPlay visible={showHowToPlay} doneText={'Close'} closeHandler={howToPlayToggle} />
 			</div>
-
 		</Transition>
-
-	)
+	);
 }
 
-export default NewOrJoin
+export default NewOrJoin;
