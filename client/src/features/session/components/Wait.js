@@ -62,7 +62,7 @@ const Wait = () => {
                         <p className="text-6xl font-bold uppercase">{ params.code }</p>
                     </div> 
 
-                    <div className={`text-2xl font-jakarta ${players.length > 3 ? 'text-red-600' : 'text-green-600'}`}>
+                    <div className={`text-2xl font-jakarta text-center ${players.length > 3 ? 'text-red-600' : 'text-green-600'}`}>
                         {
                             players.length > 3 ? 'Room is full. Start the game!' : 'Start the game or wait for others to join!'
                         }

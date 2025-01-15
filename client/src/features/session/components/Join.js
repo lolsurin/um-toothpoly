@@ -42,37 +42,53 @@ const Join = () => {
         })
 	}, [])
 
+    const [inputStyle, setInputStyle] = useState({
+        width: '4rem',
+        height: '5rem',
+        fontSize: '3rem',
+    });
+
+    useEffect(() => {
+        const updateStyle = () => {
+            if (window.innerWidth < 640) {
+                setInputStyle({ width: '2.5rem', height: '3rem', fontSize: '0.9rem' });
+            } else if (window.innerWidth < 1024) {
+                setInputStyle({ width: '3rem', height: '4rem', fontSize: '1.5rem' });
+            } else {
+                setInputStyle({ width: '4rem', height: '5rem', fontSize: '2rem' });
+            }
+        };
+
+        window.addEventListener('resize', updateStyle);
+        updateStyle(); // Initial call
+        return () => window.removeEventListener('resize', updateStyle);
+    }, []);
+
     const props = {
         className: '',
         inputStyle: {
-          fontFamily: 'sans-serif',
-          margin:  '.25rem',
-          MozAppearance: 'textfield',
-          width: '4rem',
-          borderRadius: '3px',
-          fontSize: '3rem',
-          height: '5rem',
-          textAlign: 'center',
-          fontWeight: 'bold',
-
-        //   paddingLeft: '7px',
-          color: 'black',
-          border: '1px solid lightgray'
-        },
-        inputStyleInvalid: {
+            ...inputStyle,
             fontFamily: 'sans-serif',
             margin:  '.25rem',
             MozAppearance: 'textfield',
-            width: '4rem',
             borderRadius: '3px',
-            fontSize: '3rem',
-            height: '5rem',
+            textAlign: 'center',
+            fontWeight: 'bold',
+            color: 'black',
+            border: '1px solid lightgray'
+        },
+        inputStyleInvalid: {
+            ...inputStyle,
+            fontFamily: 'sans-serif',
+            margin:  '.25rem',
+            MozAppearance: 'textfield',
+            borderRadius: '3px',
             textAlign: 'center',
             fontWeight: 'bold',
             color: 'black',
             border: '1px solid red'
         }
-      }
+    }
 
 	return (
 		<div className='min-w-min m-auto'>
@@ -87,28 +103,28 @@ const Join = () => {
                         Have a room code? Enter below
                     </div>
 
-                    <div className=''>
-                    
-                        <ReactCodeInput type='text' fields={5} {...props} 
+                    <div className="w-full flex justify-center">
+                        <ReactCodeInput 
+                            type="text" 
+                            fields={5} 
+                            {...props}
                             onChange={(e) => {
-                                //e.preventDefault()
-                                setRoomFound(true)
-                                setRoomField(e.toUpperCase())
+                                setRoomFound(true);
+                                setRoomField(e.toUpperCase());
                             }}
                             isValid={roomFound}
-                            />
+                        />
                     </div>
-                    
 
                     <div>
                         <button
                             type='submit'
                             disabled={!roomField}
-                            className={`group relative w-56 flex justify-center py-4 px-4 border border-transparent text-sm uppercase font-medium rounded-lg text-white ${
+                            className={`group relative w-56 flex justify-center py-4 px-4 border border-transparent text-xs md:text-sm lg:text-base uppercase font-medium rounded-lg text-white ${
                                 roomFound
                                     ? `bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500`
                                     : `bg-red-600`
-                            } disabled:bg-slate-300  focus:outline-none focus:ring-2 focus:ring-offset-2 `}
+                            } disabled:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-offset-2 `}
                         >
                             <span className='absolute inset-y-0 left-0 flex items-center pl-3'>
                                 {(!roomField || !roomFound) && (
