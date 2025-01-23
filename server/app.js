@@ -8,7 +8,7 @@ const app = express()
 app.use(express.static('build'))
 
 app.use(cors({
-  origin: "https://toothpoly-game.netlify.app", // Replace with your actual Netlify URL
+  origin: "https://toothpoly-game.netlify.app", 
   methods: ["GET", "POST"],
   credentials: true // Enable cookies and other credentials sharing if needed
 }))
@@ -17,7 +17,7 @@ const httpServer = require('http').createServer(app)
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://your-frontend-site.netlify.app", // Replace with your actual Netlify URL
+    origin: "https://toothpoly-game.netlify.app", 
     methods: ["GET", "POST"],
   },
   pingTimeout: 60000,

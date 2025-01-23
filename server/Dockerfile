@@ -1,17 +1,13 @@
-FROM node:17-alpine
-
-RUN npm install pm2 -g
+FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package.json ./
+COPY package.json package-lock.json* ./
 
 RUN npm install
 
-COPY . /app
+COPY . .
 
 EXPOSE 5000
 
-ENV NODE_ENV=production
-
-CMD [ "pm2-runtime", "app.js" ]
+CMD [ "npm", "start" ]
