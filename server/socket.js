@@ -1,30 +1,30 @@
-const { cleanupUponDisconnect, getRoomAndIndex } = require('./events/utils');
+const { cleanupUponDisconnect } = require('./events/utils');
 
+const gameSocket = (io) => {
+  io.on('connection', (client) => {
+    console.log(`Client connected: ${client.id}`);
 
+    // Import and initialize event handlers
+    require('./events/new/session')(io, client);
+    require('./events/new/game')(io, client);
+    require('./events/new/validators')(io, client);
 
-const gameSocket = (socket) => {
-    socket.on('connection', (client) => {
-
-        
-
-        require('./events/new/session')(socket, client);
-        require('./events/new/game')(socket, client);
-        require('./events/new/validators')(socket, client)
-
-        client.on('disconnect', () => {
-            console.log(`${client.id} disconnected`)
-            cleanupUponDisconnect(client, socket)
-        })        
+    // Handle disconnection
+    client.on('disconnect', () => {
+      console.log(`Client disconnected: ${client.id}`);
+      cleanupUponDisconnect(client, io);
     });
 
-    socket.on('reconnect', (client) => {
-        
-    })
-
-    socket.on('error', function (err) {
-        
+    // Optionally handle reconnections
+    client.on('reconnect', () => {
+      console.log(`Client reconnected: ${client.id}`);
     });
-}
 
+    // Handle errors
+    client.on('error', (err) => {
+      console.error(`Error with client ${client.id}:`, err);
+    });
+  });
+};
 
-module.exports = gameSocket
+module.exports = gameSocket;
